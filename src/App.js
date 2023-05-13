@@ -1,43 +1,77 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  const [ searchText, setSearchText ] = useState("");
+  
   const [ gameList, setGameList ] = useState([]);
+  const [ playerList, setPlayerList ] = useState([]);
+  const serverURL = "http://localhost:4000";
+  const [ searchText, setSearchText ] = useState("");
+  const [ duoPartner, setDuoPartner ] = useState("");
+  const [ playerData, setPlayerData ] = useState("");
+ 
+
+
 
   function getPlayerGames(event) { 
-    axios.get("http://localhost:4000/past5Games", { params: {username: searchText}})
+    axios.get( serverURL + "/past5Games", { params: {username: event}})
       .then(function (response) {
         setGameList(response.data);
+        console.log(gameList);
       }).catch(function (error) {
         console.log(error);
       })
   }
-  console.log(gameList);
+
+  function getPlayer(event) { 
+    axios.get( serverURL + "/player", { params: {username: event}})
+      .then(function (response) {
+        setPlayerData(response.data);
+        //console.log(playerData);
+      }).catch(function (error) {
+        console.log(error);
+      })
+  }
+
+  function TextBox() {
+    const [value, setValue] = useState('');
+  
+    useEffect(() => {
+      let timerId = null;
+  
+      if (value.length > 3) {
+        timerId = setTimeout(() => {
+          getPlayer(value);
+          //console.log(value);
+        }, 1000);
+      }
+  
+      return () => {
+        clearTimeout(timerId);
+      };
+    }, [value]);
+  
+    const handleChange = (event) => {
+      setValue(event.target.value);
+    };
+  
+    return (
+      <input type="text" value={value} onChange={handleChange} placeholder="Summoner Name"/>
+    );
+  }
   
   return (
     <div className="App">
     <div className="container">
       <h5>League Duo Partner</h5>
-      <input type="text" onChange={e=> setSearchText(e.target.value)}></input>
-      <button onClick={getPlayerGames}> Search </button>
-      {gameList.length !== 0 ? 
+      {TextBox()}
+      {JSON.stringify(playerData) != '{}' && JSON.stringify(playerData) != '""' ? 
         <>
         <p>We have data!</p>
-        {
-          gameList.map((gameData, index) =>
-          <>
-          <h2>Game {index + 1}</h2>
-          <div>{gameData.info.participants.map((data, participantIndex) => 
-            <p>Player {participantIndex + 1}: {data.summonerName}, KDA: {data.kills} / {data.deaths} / {data.assists}</p>
-          )
-          }
-          </div>
-          </>
-          )
-        }
+        {console.log(JSON.stringify(playerData))}
+        <p>{playerData[0].summonerName}</p>
+        <p>{playerData[0].tier} {playerData[0].rank}</p>
         </>
       :
       <>
