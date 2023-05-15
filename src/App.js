@@ -44,7 +44,7 @@ function App() {
         timerId = setTimeout(() => {
           getPlayer(value);
           //console.log(value);
-        }, 1000);
+        }, 500);
       }
   
       return () => {
@@ -57,7 +57,12 @@ function App() {
     };
   
     return (
-      <input type="text" value={value} onChange={handleChange} placeholder="Summoner Name"/>
+      <div className="form__group field">
+        <input type="text" className ="form__field" value={value} onChange={handleChange} placeholder="Summoner Name" name="name" id='name' required/>
+        <label htmlFor="name" className="form__label">Summoner Name</label>
+
+
+        </div>
     );
   }
   
@@ -65,11 +70,12 @@ function App() {
     <div className="App">
     <div className="container">
       <h5>League Duo Partner</h5>
+      {console.log(JSON.stringify(playerData))}
       {TextBox()}
-      {JSON.stringify(playerData) != '{}' && JSON.stringify(playerData) != '""' ? 
+      {JSON.stringify(playerData) !== '{}' && JSON.stringify(playerData) !== '""' ? 
         <>
         <p>We have data!</p>
-        {console.log(JSON.stringify(playerData))}
+        
         <p>{playerData[0].summonerName}</p>
         <p>{playerData[0].tier} {playerData[0].rank}</p>
         </>
