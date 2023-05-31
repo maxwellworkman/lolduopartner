@@ -81,3 +81,15 @@ body {
 h5 {
   font-size: 2.5em;
 }
+
+.summonerCardList {
+  
+}
+
+.summonerCard {
+  height: 10vh;
+}
+
+#root {
+  height: 100vh;
+}

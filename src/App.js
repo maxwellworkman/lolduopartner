@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
+import DuoList from './components/DuoList';
 
 function App() {
   
   const [ gameList, setGameList ] = useState([]);
   const [ playerList, setPlayerList ] = useState([]);
   const serverURL = "http://localhost:4000";
-  const [ searchText, setSearchText ] = useState("");
-  const [ duoPartner, setDuoPartner ] = useState("");
   const [ playerData, setPlayerData ] = useState("");
+  const [ showList, setShowList ] = useState(false);
+
+  const toggleShowListOn = () => {
+    setShowList(true);
+  };
+  const toggleShowListOff = () => {
+    setShowList(false);
+  };
  
 
 
@@ -28,9 +35,11 @@ function App() {
     axios.get( serverURL + "/player", { params: {username: event}})
       .then(function (response) {
         setPlayerData(response.data);
-        //console.log(playerData);
+        toggleShowListOn();
+        //console.log(response);
       }).catch(function (error) {
-        console.log(error);
+        toggleShowListOff();
+       //console.log("we're catching the error here");
       })
   }
 
@@ -43,7 +52,8 @@ function App() {
       if (value.length > 3) {
         timerId = setTimeout(() => {
           getPlayer(value);
-          //console.log(value);
+
+          console.log(value);
         }, 500);
       }
   
@@ -70,30 +80,9 @@ function App() {
     <div className="App">
     <div className="container">
       <h5>League Duo Partner</h5>
-      {console.log(JSON.stringify(playerData))}
       {TextBox()}
-      {JSON.stringify(playerData) !== '{}' && JSON.stringify(playerData) !== '""' ? 
-        <>
-        <p>We have data!</p>
-        
-        <p>{playerData[0].summonerName}</p>
-        <p>{playerData[0].tier} {playerData[0].rank}</p>
-        </>
-      :
-      <>
-        <p>We have no data!</p>
-      </>
-      }
+      {showList ? <DuoList player={playerData} playerList={playerList}/> : <p>Pick a Summoner</p>}
     </div>
-{/* 
-    {JSON.stringify(playerData) != '{}' ? 
-    <><><p>{playerData.name}</p>
-    </><img width="100" height="100" src={"http://ddragon.leagueoflegends.com/cdn/11.21.1/img/profileicon/" + playerData.profileIconId + ".png" alt="Profile Icon"}></img>
-    <p>Summoner level {playerData.summonerLevel}</p></>
-    :
-    <><p>No player Data</p></>
-    }
-     */}
   </div>
   );
 }
