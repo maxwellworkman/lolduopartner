@@ -9,12 +9,15 @@ function App() {
   const [ playerList, setPlayerList ] = useState([]);
   const serverURL = "http://localhost:4000";
   const [ playerData, setPlayerData ] = useState("");
+  const [ firstPlayer, setFirstPlayer ] = useState("");
   const [ showList, setShowList ] = useState(false);
 
   const toggleShowListOn = () => {
+    console.log("showlist on");
     setShowList(true);
   };
   const toggleShowListOff = () => {
+    console.log("showlist off");
     setShowList(false);
   };
  
@@ -25,7 +28,6 @@ function App() {
     axios.get( serverURL + "/past5Games", { params: {username: event}})
       .then(function (response) {
         setGameList(response.data);
-        console.log(gameList);
       }).catch(function (error) {
         console.log(error);
       })
@@ -36,10 +38,11 @@ function App() {
       .then(function (response) {
         setPlayerData(response.data);
         toggleShowListOn();
-        //console.log(response);
+        console.log(response);
+        console.log("we aren't catching an error");
       }).catch(function (error) {
         toggleShowListOff();
-       //console.log("we're catching the error here");
+       console.log("we're catching the error here");
       })
   }
 
@@ -48,12 +51,11 @@ function App() {
   
     useEffect(() => {
       let timerId = null;
+      toggleShowListOff();
   
       if (value.length > 3) {
         timerId = setTimeout(() => {
           getPlayer(value);
-
-          console.log(value);
         }, 500);
       }
   
@@ -81,7 +83,7 @@ function App() {
     <div className="container">
       <h5>League Duo Partner</h5>
       {TextBox()}
-      {showList ? <DuoList player={playerData} playerList={playerList}/> : <p>Pick a Summoner</p>}
+      {showList ? <DuoList player={playerData} playerList={playerList} firstPlayer={firstPlayer} setFirstPlayer={setFirstPlayer}/> : <p>Pick a Summoner</p>}
     </div>
   </div>
   );
