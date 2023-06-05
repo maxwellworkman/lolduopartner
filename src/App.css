@@ -80,6 +80,8 @@ body {
 
 h5 {
   font-size: 2.5em;
+  color: #cfd0cf;
+  margin-bottom: 30px;
 }
 
 .summonerCardList {
@@ -89,15 +91,16 @@ h5 {
 .summonerCard {
   display: flex;
   align-items: center;
-  border-radius: 4px;
+  border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 10px;
-  background-color: #131e16;
-  height: 100px;
-  transition: background-color 0.3s, color 0.3s;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: linear-gradient(to right, #15321d,  #15321d);
+  height: 85px;
 }
 .summonerCard:hover {
-  background-color: #223728;
+  background: linear-gradient(to right, #15321d,  #15552e);
 }
 .summonerIcon {
   width: 80px;
@@ -128,6 +131,17 @@ h5 {
 .cardName {
   font-size: 22px;
   color: white;
+}
+
+.removeCard {
+  color:#fff;
+  font-size: 22px;
+  margin-right: 10px;
+}
+
+
+.playerBox {
+  height: 250px;
 }
 
 #root {

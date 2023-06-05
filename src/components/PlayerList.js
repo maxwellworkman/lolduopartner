@@ -1,18 +1,15 @@
 import { useState } from "react";
 
-function DuoList(props) {
-    console.log(props);
+function PlayerList(props) {
     const pick = () => {
-        if(props.firstPlayer !== "") {
-
-        }
+        console.log("hi on clcik");
     }
     //&& typeof props.player
     try {
         //console.log("it's not empty brother");
         return (
             <div className="summonerCardList">
-                <div className='summonerCard' onClick={pick}>
+                <div className='summonerCard' onClick={() => {pick()}}>
                     <img className="summonerIcon" src={"http://ddragon.leagueoflegends.com/cdn/11.21.1/img/profileicon/" + props.player[0].profileIconId + ".png"} alt="Profile Icon"></img>
                     <div className="cardContent">
                         <div className="cardName">{props.player[0].summonerName}</div>
@@ -24,11 +21,11 @@ function DuoList(props) {
     } catch(error) {
         console.log("it's empty friend");
         return (
-            <div>Can't find Summoner</div>
+            <p>Can't find Summoner</p>
         )
     }
 };
 
 
 
-export default DuoList;
+export default PlayerList;

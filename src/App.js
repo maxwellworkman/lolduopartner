@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
-import DuoList from './components/DuoList';
+import SearchList from './components/SearchList';
+import PlayerList from './components/PlayerList';
+import SummonerCard from './components/SummonerCard';
 
 function App() {
   
@@ -9,20 +11,20 @@ function App() {
   const [ playerList, setPlayerList ] = useState([]);
   const serverURL = "http://localhost:4000";
   const [ playerData, setPlayerData ] = useState("");
-  const [ firstPlayer, setFirstPlayer ] = useState("");
-  const [ showList, setShowList ] = useState(false);
+  const [ firstPlayer, setFirstPlayer ] = useState({});
+  const [ secondPlayer, setSecondPlayer ] = useState({});
+  const [ showSearchList, setShowSearchList ] = useState(false);
+  const [ showPlayerList, setShowPlayerList ] = useState(false);
+  const [ showSearchBar, setShowSearchBar ] = useState(true);
 
-  const toggleShowListOn = () => {
-    console.log("showlist on");
-    setShowList(true);
-  };
-  const toggleShowListOff = () => {
-    console.log("showlist off");
-    setShowList(false);
-  };
+
+  const showSearchListOn = () => {setShowSearchList(true)};
+  const showSearchListOff = () => {setShowSearchList(false)};
+  const showSearchBarOn = () => {setShowSearchBar(true)};
+  const showSearchBarOff = () => {setShowSearchBar(false)};
+
+  const duoList = [firstPlayer, secondPlayer];
  
-
-
 
   function getPlayerGames(event) { 
     axios.get( serverURL + "/past5Games", { params: {username: event}})
@@ -33,25 +35,35 @@ function App() {
       })
   }
 
+  //riot api call to find summoner info
   function getPlayer(event) { 
     axios.get( serverURL + "/player", { params: {username: event}})
       .then(function (response) {
         setPlayerData(response.data);
-        toggleShowListOn();
-        console.log(response);
-        console.log("we aren't catching an error");
+        showSearchListOn();
       }).catch(function (error) {
-        toggleShowListOff();
-       console.log("we're catching the error here");
+        showSearchListOff();
       })
   }
 
-  function TextBox() {
+  //returns multiple summoner cards when passed an array of players info
+  function SummonerCards(props) {
+    return (
+      <div>
+        {props.players.map((player, index) => (
+          <SummonerCard player={player} key={index}/>
+        ))}
+      </div>
+    )
+  }
+
+  //Debounced api call when text box is modified
+  function TextBox(props) {
     const [value, setValue] = useState('');
   
     useEffect(() => {
       let timerId = null;
-      toggleShowListOff();
+      showSearchListOff();
   
       if (value.length > 3) {
         timerId = setTimeout(() => {
@@ -67,23 +79,28 @@ function App() {
     const handleChange = (event) => {
       setValue(event.target.value);
     };
-  
-    return (
-      <div className="form__group field">
-        <input type="text" className ="form__field" value={value} onChange={handleChange} placeholder="Summoner Name" name="name" id='name' required/>
-        <label htmlFor="name" className="form__label">Summoner Name</label>
-
-
-        </div>
-    );
+    if(props.showSearchBar) {
+      return (
+        <div className="form__group field">
+          <input type="text" className ="form__field" value={value} onChange={handleChange} placeholder="Summoner Name" name="name" id='name' required/>
+          <label htmlFor="name" className="form__label">Summoner Name</label>
+          </div>
+      );
+    }
   }
   
+  //Here's the page and component calls
   return (
     <div className="App">
     <div className="container">
       <h5>League Duo Partner</h5>
-      {TextBox()}
-      {showList ? <DuoList player={playerData} playerList={playerList} firstPlayer={firstPlayer} setFirstPlayer={setFirstPlayer}/> : <p>Pick a Summoner</p>}
+      <div className="playerBox">
+        <SummonerCards players={duoList}/>
+      </div>
+      {TextBox({showSearchBar})}
+
+      {showSearchList ? <SearchList player={playerData} firstPlayer={firstPlayer} setFirstPlayer={setFirstPlayer} secondPlayer={secondPlayer} setSecondPlayer={setSecondPlayer} showSearchListOff={showSearchListOff} showSearchBarOff={showSearchBarOff}/> : null}
+      {showPlayerList ? <PlayerList player={playerData} firstPlayer={firstPlayer}/> : <></>}
     </div>
   </div>
   );
