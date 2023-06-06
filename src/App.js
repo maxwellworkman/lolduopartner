@@ -4,6 +4,8 @@ import './App.css';
 import SearchList from './components/SearchList';
 import PlayerList from './components/PlayerList';
 import SummonerCard from './components/SummonerCard';
+import DuoFound from './components/DuoFound';
+import MatchHistory from './components/MatchHistory';
 
 function App() {
   
@@ -16,15 +18,19 @@ function App() {
   const [ showSearchList, setShowSearchList ] = useState(false);
   const [ showPlayerList, setShowPlayerList ] = useState(false);
   const [ showSearchBar, setShowSearchBar ] = useState(true);
+  const [ showStats, setShowStats ] = useState(false);
 
 
   const showSearchListOn = () => {setShowSearchList(true)};
   const showSearchListOff = () => {setShowSearchList(false)};
   const showSearchBarOn = () => {setShowSearchBar(true)};
   const showSearchBarOff = () => {setShowSearchBar(false)};
+  const showStatsOn = () => {setShowStats(true)};
+  const showStatsOff = () => {setShowStats(false)};
 
   const duoList = [firstPlayer, secondPlayer];
  
+  
 
   function getPlayerGames(event) { 
     axios.get( serverURL + "/past5Games", { params: {username: event}})
@@ -101,6 +107,8 @@ function App() {
 
       {showSearchList ? <SearchList player={playerData} firstPlayer={firstPlayer} setFirstPlayer={setFirstPlayer} secondPlayer={secondPlayer} setSecondPlayer={setSecondPlayer} showSearchListOff={showSearchListOff} showSearchBarOff={showSearchBarOff}/> : null}
       {showPlayerList ? <PlayerList player={playerData} firstPlayer={firstPlayer}/> : <></>}
+      <DuoFound firstPlayer={firstPlayer} secondPlayer={secondPlayer} showStatsOff={showStatsOff} showStatsOn={showStatsOn} showSearchBarOff={showSearchBarOff} showSearchBarOn={showSearchBarOn}/>
+      <MatchHistory/>
     </div>
   </div>
   );
