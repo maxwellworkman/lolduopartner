@@ -20,7 +20,7 @@ function App() {
   const [ showSearchBar, setShowSearchBar ] = useState(true);
   const [ showStats, setShowStats ] = useState(false);
 
-
+  
   const showSearchListOn = () => {setShowSearchList(true)};
   const showSearchListOff = () => {setShowSearchList(false)};
   const showSearchBarOn = () => {setShowSearchBar(true)};
@@ -31,9 +31,9 @@ function App() {
   const duoList = [firstPlayer, secondPlayer];
  
   
-
-  function getPlayerGames(event) { 
-    axios.get( serverURL + "/past5Games", { params: {username: event}})
+  //returns games with both players in them
+  function getPlayerGames(player1, player2, start, count) { 
+        axios.get( serverURL + "/past5Games", { params: {player1: player1, player2: player2, start: start, count: count}})
       .then(function (response) {
         setGameList(response.data);
       }).catch(function (error) {
@@ -96,6 +96,12 @@ function App() {
   }
   
   //Here's the page and component calls
+  //SummonerCards renders the cards of the duo partners
+  //Textbox fires a search function
+  //SearchList renders search results
+  //PlayerList doesn't do anything
+  //DuoFound is an event hook for when 2 players are picked
+  //Match History grabs player games and renders them
   return (
     <div className="App">
     <div className="container">
@@ -108,7 +114,7 @@ function App() {
       {showSearchList ? <SearchList player={playerData} firstPlayer={firstPlayer} setFirstPlayer={setFirstPlayer} secondPlayer={secondPlayer} setSecondPlayer={setSecondPlayer} showSearchListOff={showSearchListOff} showSearchBarOff={showSearchBarOff}/> : null}
       {showPlayerList ? <PlayerList player={playerData} firstPlayer={firstPlayer}/> : <></>}
       <DuoFound firstPlayer={firstPlayer} secondPlayer={secondPlayer} showStatsOff={showStatsOff} showStatsOn={showStatsOn} showSearchBarOff={showSearchBarOff} showSearchBarOn={showSearchBarOn}/>
-      <MatchHistory/>
+      {showStats && <MatchHistory firstPlayer={firstPlayer} secondPlayer={secondPlayer} getPlayerGames={getPlayerGames} gameList={gameList} setGameList={setGameList}/>}
     </div>
   </div>
   );

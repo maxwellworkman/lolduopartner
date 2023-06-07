@@ -5,7 +5,6 @@ const DuoFound = ({firstPlayer, secondPlayer, showStatsOn, showStatsOff, showSea
 
   useEffect(() => {
     if(firstPlayer.summonerName && secondPlayer.summonerName) {
-        console.log("we in it");
         showStatsOn();
         showSearchBarOff();
     } else {
