@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import jhinGuy from '../images/jhinGuy.jpg';
 
 function SummonerCard(props) {
 const [isHovered, setIsHovered] = useState(false);
@@ -13,17 +14,21 @@ const [isHovered, setIsHovered] = useState(false);
 
     try {
       return (
-        <div>
+        <>
           {props.player.summonerName ? (
-            <div className='summonerCard' onMouseEnter={handleHover} onMouseLeave={handleLeave}>
-              <img className="summonerIcon" src={"http://ddragon.leagueoflegends.com/cdn/11.21.1/img/profileicon/" + props.player.profileIconId + ".png"} alt="Profile Icon"></img>
-                <div className="cardContent">
-                  <div className="cardName">{props.player.summonerName}</div>
+            <div className='duoCard' onMouseEnter={handleHover} onMouseLeave={handleLeave}>
+                {(props.player.summonerName ==="Hyzare") ? 
+                    <img className="duoIcon" src={jhinGuy} alt="Profile Icon"></img>
+                : 
+                <img className="duoIcon" src={"http://ddragon.leagueoflegends.com/cdn/11.21.1/img/profileicon/" + props.player.profileIconId + ".png"} alt="Profile Icon"></img>
+                }
+                <div className="duoCardContent">
+                  <div className="duoCardName">{props.player.summonerName}</div>
                   {isHovered && <div className="removeCard">X</div>}
                 </div>
             </div>
           ) : null}
-        </div>
+          </>
       );
     } catch (error) {
       console.log(error);

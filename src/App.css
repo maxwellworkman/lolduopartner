@@ -76,7 +76,7 @@ body {
   align-items: center;
   min-height: 100vh;
   font-size: 1.5rem;
-  background-color: #EAD5C2;
+  background-color: #192C40;
 }
 
 h5 {
@@ -136,16 +136,70 @@ h5 {
 
 .removeCard {
   color:#fff;
-  font-size: 22px;
   margin-right: 10px;
 }
 
+.duoCard {
+  display: flex;
+  align-items: center;
+  border-style: solid;
+  border-radius: 5px;
+  border-color: #3468ad;
+  border-width: 2px;
+  box-shadow: 10px 10px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin: 10px;
+  background-image: linear-gradient(290deg, #192C40, #1d344d);
+  height: 65px;
+  width: 250px;
+}
+
+.duoIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 20px;
+  margin-left: 10px;
+}
+
+.duoCardContent {
+  font-size: 18px;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  flex-flow: row;
+  flex-grow: 1;
+  color: #6d98ca;
+}
+
+
 
 .playerBox {
-  height: 250px;
+  height: 100px;
+  width: 80vh;
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex-flow: row;
 }
+
+.statsBox {
+  display: flex;
+  justify-content: right;
+}
+
+.matchBox {
+  width: 700px;
+}
+
+
+
 
 #root {
   height: 100vh;
+  width: 80vh;
 }
 

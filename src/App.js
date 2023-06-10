@@ -6,6 +6,7 @@ import PlayerList from './components/PlayerList';
 import SummonerCard from './components/SummonerCard';
 import DuoFound from './components/DuoFound';
 import MatchHistory from './components/MatchHistory';
+import ChampionPortrait from './components/ChampionPortrait';
 
 function App() {
   
@@ -55,11 +56,11 @@ function App() {
   //returns multiple summoner cards when passed an array of players info
   function SummonerCards(props) {
     return (
-      <div>
+      <>
         {props.players.map((player, index) => (
           <SummonerCard player={player} key={index}/>
         ))}
-      </div>
+      </>
     )
   }
 
@@ -114,7 +115,9 @@ function App() {
       {showSearchList ? <SearchList player={playerData} firstPlayer={firstPlayer} setFirstPlayer={setFirstPlayer} secondPlayer={secondPlayer} setSecondPlayer={setSecondPlayer} showSearchListOff={showSearchListOff} showSearchBarOff={showSearchBarOff}/> : null}
       {showPlayerList ? <PlayerList player={playerData} firstPlayer={firstPlayer}/> : <></>}
       <DuoFound firstPlayer={firstPlayer} secondPlayer={secondPlayer} showStatsOff={showStatsOff} showStatsOn={showStatsOn} showSearchBarOff={showSearchBarOff} showSearchBarOn={showSearchBarOn}/>
-      {showStats && <MatchHistory firstPlayer={firstPlayer} secondPlayer={secondPlayer} getPlayerGames={getPlayerGames} gameList={gameList} setGameList={setGameList}/>}
+      <div className="statsBox">
+      {showStats && <MatchHistory firstPlayer={firstPlayer} secondPlayer={secondPlayer} gameList={gameList} setGameList={setGameList}/>}
+      </div>
     </div>
   </div>
   );

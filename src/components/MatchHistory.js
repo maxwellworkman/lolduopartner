@@ -1,38 +1,39 @@
-function MatchHistory(props) {
+import React, { useState, useEffect} from 'react';
+import ChampionPortrait from "./ChampionPortrait";
+import Match from "./Match";
+import axios from 'axios';
+
+function MatchHistory({firstPlayer, secondPlayer, gameList, setGameList}) {
+    const serverURL = "http://localhost:4000";
     var start = 0;
     var count = 100;
-    if(props.gameList.length === 0) {
-        try {
-            props.getPlayerGames(props.firstPlayer.summonerName, props.secondPlayer.summonerName, start, count);
-            
-        } catch (error) {
+    useEffect(() => {
+        // Define an async function to fetch the player games
+        async function fetchPlayerGames() {
+          try {
+            const response = await axios.get(serverURL + '/past5Games', {
+              params: { firstPlayer, secondPlayer, start, count },
+            });
+            setGameList(response.data);
+          } catch (error) {
             console.log(error);
+          }
         }
-    }
-    function calculateStats(props) {
-
-    }
     
+        // Call the async function when the component mounts
+        fetchPlayerGames();
+      }, []);
+
     return (
-        <div>
-            {props.gameList.map((gameData, index) => (
+        <>
+        <div className="matchBox">
+            {gameList.map((gameData) => (
                 <>
-                <div key={index}>Game {index+1}</div>
-                    {gameData.info.participants.map((data, participantIndex) => {
-                        if(data.summonerName === props.firstPlayer.summonerName) {
-                            return (
-                                <div key={participantIndex}>{data.summonerName} {data.kills} / {data.deaths} / {data.assists}</div>
-                            )
-                        }
-                        if(data.summonerName === props.secondPlayer.summonerName) {
-                            return (
-                                <div key={participantIndex}>{data.summonerName} {data.kills} / {data.deaths} / {data.assists}</div>
-                            )
-                        }}
-                    )}
+                {(gameList.length > 0) && <Match firstPlayer={firstPlayer} secondPlayer={secondPlayer} gameData={gameData} key={gameData.info.gameId}/>}
                 </>
             ))}
         </div>
+        </>
     );
 }
 
