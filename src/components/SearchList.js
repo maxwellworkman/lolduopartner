@@ -17,7 +17,7 @@ function SearchList(props) {
         return (
             <div className="summonerCardList">
                 <div className='summonerCard' onClick={() => {pick()}}>
-                    <img className="summonerIcon" src={"http://ddragon.leagueoflegends.com/cdn/11.21.1/img/profileicon/" + props.player[0].profileIconId + ".png"} alt="Profile Icon"></img>
+                    <img className="summonerIcon" src={"http://ddragon.leagueoflegends.com/cdn/13.12.1/img/profileicon/" + props.player[0].profileIconId + ".png"} alt="Profile Icon"></img>
                     <div className="cardContent">
                         <div className="cardName">{props.player[0].summonerName}</div>
                         <div className="cardRank">{props.player[0].tier} {props.player[0].rank}</div>

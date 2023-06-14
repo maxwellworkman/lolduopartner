@@ -30,9 +30,14 @@ const ChampionPortrait = ({ championName }) => {
     return <div>Loading champion portrait...</div>;
   }
   
-  const champion = Object.values(championData.data).find(
-    (champ) => champ.name.replace(/[\s']/g, '').toLowerCase() === championName.replace(/[\s']/g, '').toLowerCase() || champ.id.replace(/[\s']/g, '').toLowerCase() === championName.replace(/[\s']/g, '').toLowerCase()
-  );
+  
+  const champion = Object.values(championData.data).find((champ) => {
+    const championNameNormalized = championName.replace(/[\s']/g, '').toLowerCase();
+    const champNameNormalized = champ.name ? champ.name.replace(/[\s']/g, '').toLowerCase() : null;
+    const champIdNormalized = champ.id ? champ.id.replace(/[\s']/g, '').toLowerCase() : null;
+  
+    return champNameNormalized === championNameNormalized || champIdNormalized === championNameNormalized;
+  });
 
   if (!champion) {
     return <div>?</div>;

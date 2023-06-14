@@ -20,7 +20,7 @@ const [isHovered, setIsHovered] = useState(false);
                 {(props.player.summonerName ==="Hyzare") ? 
                     <img className="duoIcon" src={jhinGuy} alt="Profile Icon"></img>
                 : 
-                <img className="duoIcon" src={"http://ddragon.leagueoflegends.com/cdn/11.21.1/img/profileicon/" + props.player.profileIconId + ".png"} alt="Profile Icon"></img>
+                <img className="duoIcon" src={"http://ddragon.leagueoflegends.com/cdn/13.12.1/img/profileicon/" + props.player.profileIconId + ".png"} alt="Profile Icon"></img>
                 }
                 <div className="duoCardContent">
                   <div className="duoCardName">{props.player.summonerName}</div>

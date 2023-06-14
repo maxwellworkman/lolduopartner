@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './App.css';
 import SearchList from './components/SearchList';
@@ -7,12 +7,13 @@ import SummonerCard from './components/SummonerCard';
 import DuoFound from './components/DuoFound';
 import MatchHistory from './components/MatchHistory';
 import ChampionPortrait from './components/ChampionPortrait';
+import WinRates from './components/WinRates';
 
 function App() {
   
   const [ gameList, setGameList ] = useState([]);
   const [ playerList, setPlayerList ] = useState([]);
-  const serverURL = "http://localhost:4000";
+
   const [ playerData, setPlayerData ] = useState("");
   const [ firstPlayer, setFirstPlayer ] = useState({});
   const [ secondPlayer, setSecondPlayer ] = useState({});
@@ -31,16 +32,40 @@ function App() {
 
   const duoList = [firstPlayer, secondPlayer];
  
-  
-  //returns games with both players in them
-  function getPlayerGames(player1, player2, start, count) { 
-        axios.get( serverURL + "/past5Games", { params: {player1: player1, player2: player2, start: start, count: count}})
-      .then(function (response) {
-        setGameList(response.data);
-      }).catch(function (error) {
-        console.log(error);
-      })
+  const serverURL = "http://localhost:4000";
+  var start = 0;
+  var count = 100;
+  const prevFirstPlayer = useRef(null);
+  const prevSecondPlayer = useRef(null);
+
+
+  async function fetchPlayerGames() {
+    try {
+      const firstPlayerName = firstPlayer.summonerName;
+      const secondPlayerName = secondPlayer.summonerName;
+      const response = await axios.get(serverURL + '/past5Games', {
+        params: { firstPlayerName, secondPlayerName, start, count },
+      });
+      setGameList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  useEffect(() => {
+    if (firstPlayer.summonerName && secondPlayer.summonerName) {
+      showSearchBarOff();
+      if(prevFirstPlayer.current !== firstPlayer || prevSecondPlayer.current !== secondPlayer) {
+        fetchPlayerGames();
+      }
+      showStatsOn();
+    } else {
+      showStatsOff();
+      showSearchBarOn();
+    }
+    prevFirstPlayer.current = firstPlayer;
+    prevSecondPlayer.current = secondPlayer;
+  }, [firstPlayer, secondPlayer]); 
 
   //riot api call to find summoner info
   function getPlayer(event) { 
@@ -114,8 +139,9 @@ function App() {
 
       {showSearchList ? <SearchList player={playerData} firstPlayer={firstPlayer} setFirstPlayer={setFirstPlayer} secondPlayer={secondPlayer} setSecondPlayer={setSecondPlayer} showSearchListOff={showSearchListOff} showSearchBarOff={showSearchBarOff}/> : null}
       {showPlayerList ? <PlayerList player={playerData} firstPlayer={firstPlayer}/> : <></>}
-      <DuoFound firstPlayer={firstPlayer} secondPlayer={secondPlayer} showStatsOff={showStatsOff} showStatsOn={showStatsOn} showSearchBarOff={showSearchBarOff} showSearchBarOn={showSearchBarOn}/>
+      {/* <DuoFound firstPlayer={firstPlayer} secondPlayer={secondPlayer} showStatsOff={showStatsOff} showStatsOn={showStatsOn} showSearchBarOff={showSearchBarOff} showSearchBarOn={showSearchBarOn}/> */}
       <div className="statsBox">
+      {showStats && <WinRates gameList={gameList}/>}
       {showStats && <MatchHistory firstPlayer={firstPlayer} secondPlayer={secondPlayer} gameList={gameList} setGameList={setGameList}/>}
       </div>
     </div>
