@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import jhinGuy from '../images/jhinGuy.jpg';
 
 const ChampionPortrait = ({ championName }) => {
   const [championData, setChampionData] = useState(null);
@@ -27,7 +28,7 @@ const ChampionPortrait = ({ championName }) => {
   }, []);
 
   if (!championData) {
-    return <div>Loading champion portrait...</div>;
+    return <div></div>;
   }
   
   
@@ -40,7 +41,12 @@ const ChampionPortrait = ({ championName }) => {
   });
 
   if (!champion) {
-    return <div>?</div>;
+    return <>
+    <img
+      src={jhinGuy}
+      alt="Champion Not Found"
+    />
+  </>;
   }
 
   return (

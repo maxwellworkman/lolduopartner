@@ -47,6 +47,7 @@ function App() {
         params: { firstPlayerName, secondPlayerName, start, count },
       });
       setGameList(response.data);
+      console.log(gameList);
     } catch (error) {
       console.log(error);
     }
