@@ -4,9 +4,8 @@
   --secondary: #38ef7d;
   --white: #fff;
   --gray: #9b9b9b;
-  --cream: #F2E3D6;
+  --cream: #f2e3d6;
 }
-
 
 .form__group {
   position: relative;
@@ -32,7 +31,7 @@
   }
 
   &:placeholder-shown ~ .form__label {
-    font-size: 1.0rem;
+    font-size: 1rem;
     cursor: text;
     top: 20px;
   }
@@ -55,28 +54,31 @@
     transition: 0.2s;
     font-size: 1rem;
     color: var(--primary);
-    font-weight:700;    
+    font-weight: 700;
   }
-  padding-bottom: 6px;  
+  padding-bottom: 6px;
   font-weight: 700;
   border-width: 3px;
-  border-image: linear-gradient(to right, var(--primary),var(--secondary));
+  border-image: linear-gradient(to right, var(--primary), var(--secondary));
   border-image-slice: 1;
 }
 /* reset input */
-.form__field{
-  &:required,&:invalid { box-shadow:none; }
+.form__field {
+  &:required,
+  &:invalid {
+    box-shadow: none;
+  }
 }
 /* demo */
 body {
-  font-family: 'Poppins', sans-serif; 
+  font-family: "Poppins", sans-serif;
   display: flex;
   flex-direction: column;
   justify-content: top;
   align-items: center;
   min-height: 100vh;
   font-size: 1.5rem;
-  background-color: #192C40;
+  background-color: #192c40;
 }
 
 h5 {
@@ -97,11 +99,11 @@ h5 {
   padding: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
-  background: linear-gradient(to right, #15321d,  #15321d);
+  background: linear-gradient(to right, #15321d, #15321d);
   height: 85px;
 }
 .summonerCard:hover {
-  background: linear-gradient(to right, #15321d,  #15552e);
+  background: linear-gradient(to right, #15321d, #15552e);
 }
 .summonerIcon {
   width: 80px;
@@ -111,8 +113,6 @@ h5 {
   margin-right: 20px;
   margin-left: 10px;
 }
-
-
 
 .cardRank {
   display: flex;
@@ -135,7 +135,7 @@ h5 {
 }
 
 .removeCard {
-  color:#fff;
+  color: #fff;
   margin-right: 10px;
 }
 
@@ -149,7 +149,7 @@ h5 {
   box-shadow: 10px 10px 4px rgba(0, 0, 0, 0.1);
   padding: 10px;
   margin: 10px;
-  background-image: linear-gradient(290deg, #192C40, #1d344d);
+  background-image: linear-gradient(290deg, #192c40, #1d344d);
   height: 65px;
   width: 250px;
 }
@@ -173,8 +173,6 @@ h5 {
   color: #6d98ca;
 }
 
-
-
 .playerBox {
   height: 100px;
   margin-bottom: 50px;
@@ -194,12 +192,8 @@ h5 {
   width: 700px;
 }
 
-
-
-
 #root {
   height: 100vh;
   width: 120vh;
   max-width: fit-content;
 }
-

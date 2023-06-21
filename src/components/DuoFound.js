@@ -1,19 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import fetchPlayerGames from './fetchPlayerGames';
+import React, { useState, useEffect } from "react";
+import fetchPlayerGames from "./fetchPlayerGames";
 
 //fires when firstPlayer and secondPlayer are changed. let's app know it's good to make games api call
-const DuoFound = ({firstPlayer, secondPlayer, showStatsOn, showStatsOff, showSearchBarOff, showSearchBarOn}) => {
-
+const DuoFound = ({
+  firstPlayer,
+  secondPlayer,
+  showStatsOn,
+  showStatsOff,
+  showSearchBarOff,
+  showSearchBarOn,
+}) => {
   useEffect(() => {
-    if(firstPlayer.summonerName && secondPlayer.summonerName) {
-        showStatsOn();
-        showSearchBarOff();
-        
+    if (firstPlayer.summonerName && secondPlayer.summonerName) {
+      showStatsOn();
+      showSearchBarOff();
     } else {
-        showStatsOff();
-        showSearchBarOn();
+      showStatsOff();
+      showSearchBarOn();
     }
-  }, [firstPlayer, secondPlayer]); 
+  }, [firstPlayer, secondPlayer]);
 };
 
 export default DuoFound;
