@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ChampionPortrait from "./ChampionPortrait";
 import { useSpring, animated } from "react-spring";
 import "./WinRates.css";
+import { PropTypes } from "prop-types";
 
 function WinRates(props) {
   const championPairs = {};
@@ -116,4 +117,7 @@ function WinRates(props) {
   );
 }
 
+WinRates.propTypes = {
+  gameList: PropTypes.array
+}
 export default WinRates;

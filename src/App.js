@@ -4,20 +4,18 @@ import "./App.css";
 import SearchList from "./components/SearchList";
 import PlayerList from "./components/PlayerList";
 import SummonerCard from "./components/SummonerCard";
-import DuoFound from "./components/DuoFound";
 import MatchHistory from "./components/MatchHistory";
-import ChampionPortrait from "./components/ChampionPortrait";
 import WinRates from "./components/WinRates";
+import { PropTypes } from "prop-types";
 
 function App() {
   const [gameList, setGameList] = useState([]);
-  const [playerList, setPlayerList] = useState([]);
 
   const [playerData, setPlayerData] = useState("");
   const [firstPlayer, setFirstPlayer] = useState({});
   const [secondPlayer, setSecondPlayer] = useState({});
   const [showSearchList, setShowSearchList] = useState(false);
-  const [showPlayerList, setShowPlayerList] = useState(false);
+  const [showPlayerList] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(true);
   const [showStats, setShowStats] = useState(false);
 
@@ -90,6 +88,7 @@ function App() {
         showSearchListOn();
       })
       .catch(function (error) {
+        console.log(error);
         showSearchListOff();
       });
   }
@@ -188,13 +187,17 @@ function App() {
               firstPlayer={firstPlayer}
               secondPlayer={secondPlayer}
               gameList={gameList}
-              setGameList={setGameList}
             />
           )}
         </div>
       </div>
     </div>
   );
+}
+
+App.propTypes = {
+  players: PropTypes.object,
+  showSearchBar: PropTypes.func
 }
 
 export default App;

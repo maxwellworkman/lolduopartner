@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import jhinGuy from "../images/jhinGuy.jpg";
+import { PropTypes } from "prop-types";
 
 const ChampionPortrait = ({ championName }) => {
   const [championData, setChampionData] = useState(null);
@@ -65,5 +66,9 @@ const ChampionPortrait = ({ championName }) => {
     </>
   );
 };
+
+ChampionPortrait.propTypes = {
+  championName: PropTypes.string
+}
 
 export default ChampionPortrait;

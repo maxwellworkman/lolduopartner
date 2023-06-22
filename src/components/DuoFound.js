@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import fetchPlayerGames from "./fetchPlayerGames";
+import  { useEffect } from "react";
 
 //fires when firstPlayer and secondPlayer are changed. let's app know it's good to make games api call
 const DuoFound = ({

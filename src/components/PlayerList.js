@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React from "react";
 
 function PlayerList(props) {
   const pick = () => {
@@ -35,7 +35,7 @@ function PlayerList(props) {
     );
   } catch (error) {
     console.log("it's empty friend");
-    return <p>Can't find Summoner</p>;
+    return <p>Can&apost find Summoner</p>;
   }
 }
 

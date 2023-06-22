@@ -3,21 +3,12 @@ import ChampionPortrait from "./ChampionPortrait";
 import "./Match.css";
 import ExpandedMatch from "./ExpandedMatch";
 import { useSpring, animated } from 'react-spring';
+import { PropTypes } from "prop-types";
 
 function Match(props) {
   const [expand, setExpand] = useState(false);
 
-  //returns team "100" or "200" based on summoner name
-  function findTeamByParticipant(matchData, participantId) {
-    if (matchData.info.participants && matchData.info.participants.length > 0) {
-      if (participantId) {
-        const team = matchData.info.participants[participantId - 1].teamID;
-        return team;
-      } else {
-        return null; // Summoner not found or team not found
-      }
-    }
-  }
+  
 
   //returns true if won, false if lost
   function didTeamWin(matchData, participantId) {
@@ -140,7 +131,6 @@ function Match(props) {
   );
   const enemy1 = findEnemy(props.gameData, participant1);
   const enemy2 = findEnemy(props.gameData, participant2);
-  const teamID = findTeamByParticipant(props.gameData, participant1);
   const outcome = didTeamWin(props.gameData, participant1);
   const getResult = (isVictory) => (isVictory ? "Victory" : "Defeat");
   const p1Champ = getChampionName(props.gameData, participant1);
@@ -205,4 +195,9 @@ function Match(props) {
   );
 }
 
+Match.propTypes = {
+  gameData: PropTypes.object,
+  firstPlayer: PropTypes.object,
+  secondPlayer: PropTypes.object,
+}
 export default Match;

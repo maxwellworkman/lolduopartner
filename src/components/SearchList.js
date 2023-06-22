@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React from "react";
 
 function SearchList(props) {
   const pick = () => {
@@ -45,7 +45,7 @@ function SearchList(props) {
     );
   } catch (error) {
     console.log("it's empty friend");
-    return <p>Can't find Summoner</p>;
+    return <p>Can&apost find Summoner</p>;
   }
 }
 

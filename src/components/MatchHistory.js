@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Match from "./Match";
+import { PropTypes } from "prop-types";
 
-function MatchHistory({ firstPlayer, secondPlayer, gameList, setGameList }) {
+function MatchHistory({ firstPlayer, secondPlayer, gameList}) {
   // console.log(firstPlayer);
   // console.log(secondPlayer);
   // console.log(gameList);
@@ -23,6 +24,12 @@ function MatchHistory({ firstPlayer, secondPlayer, gameList, setGameList }) {
       </div>
     </>
   );
+}
+
+MatchHistory.propTypes = {
+  firstPlayer: PropTypes.object,
+  secondPlayer: PropTypes.object,
+  gameList: PropTypes.object
 }
 
 export default MatchHistory;
