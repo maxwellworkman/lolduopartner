@@ -4,6 +4,7 @@ function expandedMatchCalc(matchData, participantBall, gameSummary) {
     //console.log(gameSummary);
     const tl = matchData.info;
     const frames = tl.frames;
+    const summary = gameSummary;
     const frameAt10Minutes = frames.find(frame => frame.timestamp >= 600000);
     const statBall = {
         goldAt10: {
@@ -97,7 +98,7 @@ function expandedMatchCalc(matchData, participantBall, gameSummary) {
             e1: 0,
             e2: 0
           };
-      }
+    }
 
     function getCsAtFrame(frame, { p1, p2, e1, e2 }) {
         if (frame && frame.participantFrames) {
@@ -170,6 +171,7 @@ function expandedMatchCalc(matchData, participantBall, gameSummary) {
     statBall.dmgAt10 = getDmgAtFrame(frameAt10Minutes, participantBall);
     statBall.xpAt10 = getXpAtFrame(frameAt10Minutes, participantBall);
 
+    
 
 
     return statBall;
