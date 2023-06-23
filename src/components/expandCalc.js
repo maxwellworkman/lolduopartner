@@ -1,5 +1,5 @@
 
-function expandedMatchCalc(matchData, participantBall) {
+function expandCalc(matchData, participantBall) {
     //console.log(matchData);
     //console.log(gameSummary);
     const tl = matchData.info;
@@ -177,4 +177,4 @@ function expandedMatchCalc(matchData, participantBall) {
     return statBall;
 }
 
-export default expandedMatchCalc
+export default expandCalc
