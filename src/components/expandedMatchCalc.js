@@ -1,10 +1,10 @@
 
-function expandedMatchCalc(matchData, participantBall, gameSummary) {
+function expandedMatchCalc(matchData, participantBall) {
     //console.log(matchData);
     //console.log(gameSummary);
     const tl = matchData.info;
     const frames = tl.frames;
-    const summary = gameSummary;
+    //const summary = gameSummary;
     const frameAt10Minutes = frames.find(frame => frame.timestamp >= 600000);
     const statBall = {
         goldAt10: {
