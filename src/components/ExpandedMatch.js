@@ -38,7 +38,7 @@ function ExpandedMatch(props) {
 
     useEffect(() => {
         if (matchData) {
-            setStatBall(expandedMatchCalc(matchData, participantBall, gameSummary));
+            setStatBall(expandedMatchCalc(matchData, participantBall));
             setRatios(calculatePercentages(statBall));
         }
     }, [matchData]);
