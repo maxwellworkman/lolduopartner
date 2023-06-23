@@ -77,7 +77,6 @@ function ExpandedMatch(props) {
 
 
     if (calcDone) {
-        try {
             return (
                 <div className="expandedMatchBox">
                     <div className="expColumn">
@@ -175,13 +174,6 @@ function ExpandedMatch(props) {
 
                 </div>
             )
-
-        } catch {
-            return (
-                <div className="expandedMatchBox">No Game</div>
-            )
-        }
-
     } else {
         return (
             <div className="expandedMatchBox">No Game</div>
