@@ -121,78 +121,84 @@ function Match(props) {
     height: expand ? '400px' : '0px',
   });
 
-  const participant1 = getParticipantNumber(
-    props.gameData,
-    props.firstPlayer.summonerName
-  );
-  const participant2 = getParticipantNumber(
-    props.gameData,
-    props.secondPlayer.summonerName
-  );
-  const enemy1 = findEnemy(props.gameData, participant1);
-  const enemy2 = findEnemy(props.gameData, participant2);
-  const outcome = didTeamWin(props.gameData, participant1);
-  const getResult = (isVictory) => (isVictory ? "Victory" : "Defeat");
-  const p1Champ = getChampionName(props.gameData, participant1);
-  const p2Champ = getChampionName(props.gameData, participant2);
-  const e1Champ = getChampionName(props.gameData, enemy1);
-  const e2Champ = getChampionName(props.gameData, enemy2);
-  props.gameData.p1Champ = p1Champ;
-  props.gameData.p2Champ = p2Champ;
-  props.gameData.outcome = outcome;
-  const participantBall = {p1: participant1, p2: participant2, e1: enemy1, e2: enemy2};
+  if (props.firstPlayer && props.secondPlayer) {
+    try {
+      const participant1 = getParticipantNumber(
+        props.gameData,
+        props.firstPlayer.summonerName
+      );
+      const participant2 = getParticipantNumber(
+        props.gameData,
+        props.secondPlayer.summonerName
+      );
+      const enemy1 = findEnemy(props.gameData, participant1);
+      const enemy2 = findEnemy(props.gameData, participant2);
+      const outcome = didTeamWin(props.gameData, participant1);
+      const getResult = (isVictory) => (isVictory ? "Victory" : "Defeat");
+      const p1Champ = getChampionName(props.gameData, participant1);
+      const p2Champ = getChampionName(props.gameData, participant2);
+      const e1Champ = getChampionName(props.gameData, enemy1);
+      const e2Champ = getChampionName(props.gameData, enemy2);
+      props.gameData.p1Champ = p1Champ;
+      props.gameData.p2Champ = p2Champ;
+      props.gameData.outcome = outcome;
+      const participantBall = { p1: participant1, p2: participant2, e1: enemy1, e2: enemy2 };
 
-  return (
-    <div 
-      className={"matchCard " + getResult(outcome)} 
-      key={props.gameData.info.gameID} 
-      onClick={handleClick}
-      >
-      <div className="cardExpandContainer">
-        <div className="summaryContainer">
-          <div className="leftPlayerBox">
-            <div className="leftPortraitContainer">
-              <ChampionPortrait championName={p1Champ} />
-            </div>
-            <div className="leftData">
-              <div className="leftPlayerName">{props.firstPlayer.summonerName}</div>
-              <div className="leftPlayerStats">
-                {buildStatString(props.gameData, participant1)}
+      return (
+        <div
+          className={"matchCard " + getResult(outcome)}
+          key={props.gameData.info.gameID}
+          onClick={handleClick}
+        >
+          <div className="cardExpandContainer">
+            <div className="summaryContainer">
+              <div className="leftPlayerBox">
+                <div className="leftPortraitContainer">
+                  <ChampionPortrait championName={p1Champ} />
+                </div>
+                <div className="leftData">
+                  <div className="leftPlayerName">{props.firstPlayer.summonerName}</div>
+                  <div className="leftPlayerStats">
+                    {buildStatString(props.gameData, participant1)}
+                  </div>
+                </div>
+              </div>
+              <div className="centerMatchBox">
+                <div className="outcome">{getResult(outcome)}</div>
+                <div className="vsBox">
+                  <div className="leftEnemyContainer">
+                    <ChampionPortrait championName={e1Champ} />
+                  </div>
+                  <div className="vs">Vs</div>
+                  <div className="rightEnemyContainer">
+                    <ChampionPortrait championName={e2Champ} />
+                  </div>
+                </div>
+              </div>
+              <div className="rightPlayerBox">
+                <div className="rightData">
+                  <div className="rightPlayerName">
+                    {props.secondPlayer.summonerName}
+                  </div>
+                  <div className="rightPlayerStats">
+                    {buildStatString(props.gameData, participant2)}
+                  </div>
+                </div>
+                <div className="rightPortraitContainer">
+                  <ChampionPortrait championName={p2Champ} />
+                </div>
               </div>
             </div>
-          </div>
-          <div className="centerMatchBox">
-            <div className="outcome">{getResult(outcome)}</div>
-            <div className="vsBox">
-              <div className="leftEnemyContainer">
-                <ChampionPortrait championName={e1Champ} />
-              </div>
-              <div className="vs">Vs</div>
-              <div className="rightEnemyContainer">
-                <ChampionPortrait championName={e2Champ} />
-              </div>
-            </div>
-          </div>
-          <div className="rightPlayerBox">
-            <div className="rightData">
-              <div className="rightPlayerName">
-                {props.secondPlayer.summonerName}
-              </div>
-              <div className="rightPlayerStats">
-                {buildStatString(props.gameData, participant2)}
-              </div>
-            </div>
-            <div className="rightPortraitContainer">
-              <ChampionPortrait championName={p2Champ} />
-            </div>
+            <animated.div className="expandBox" style={slideOpen}>
+              {expand && <ExpandedMatch participants={participantBall} gameSummary={props.gameData}/>}
+            </animated.div>
           </div>
         </div>
-        <animated.div className="expandBox" style={slideOpen}>
-          {expand && <ExpandedMatch gameId={props.gameData.info.gameId} participants={participantBall}/>}
-        </animated.div>
-      </div>
-    </div>
-  );
+      );
+    } catch (error) {
+      return null;
+    }
+  }
 }
 
 Match.propTypes = {

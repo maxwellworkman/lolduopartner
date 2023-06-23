@@ -2,64 +2,87 @@ import "./Match.css";
 import fetchMatchTimeline from "./fetchMatchTimeline";
 import React, { useState, useEffect } from "react";
 import { PropTypes } from "prop-types";
+import expandedMatchCalc from "./expandedMatchCalc";
+import { useSpring, animated } from 'react-spring';
 
 function ExpandedMatch(props) {
     const [matchData, setMatchData] = useState(null);
-    //console.log(props.gameId);
+    const [statBall, setStatBall] = useState({});
+    const [calcDone, setCalcDone] = useState(false);
+    const participantBall = props.participants;
+    const gameId = props.gameSummary.info.gameId;
+    const gameSummary = props.gameSummary;
+    //console.log(props);
 
     useEffect(() => {
-        if (props.gameId) {
-          fetchMatchData();
+        if (gameId) {
+            fetchMatchData();
         }
-      }, [props.gameId]);
-    
-      const fetchMatchData = async () => {
+    }, [gameId]);
+
+    useEffect(() => {
+        if (statBall.goldAt10) {
+            setCalcDone(true);
+        }
+    }, [statBall]);
+
+    const fetchMatchData = async () => {
         try {
-          const data = await fetchMatchTimeline(props.gameId);
-          setMatchData(data);
+            const data = await fetchMatchTimeline(gameId);
+            setMatchData(data);
         } catch (error) {
-          console.error('Error fetching match data:', error);
+            console.error('Error fetching match data:', error);
         }
-      };
+    };
 
-    //   const {p1, p2, e1, e2} = props.participantBall;
-
-    //   function getGoldAt10Minutes(timeline, participantId1, participantId2) {
-    //     // Find the frames array in the timeline object
-    //     const frames = timeline.frames;
-      
-    //     // Find the frame at 10 minutes (assuming 1 second = 1 game minute)
-    //     const frameAt10Minutes = frames.find(frame => frame.timestamp >= 600000);
-      
-    //     // Check if the frame exists and contains participant gold data
-    //     if (frameAt10Minutes && frameAt10Minutes.participantFrames) {
-    //       // Get the participant gold data from the frame
-    //       const participantGold1 = frameAt10Minutes.participantFrames[participantId1].totalGold;
-    //       const participantGold2 = frameAt10Minutes.participantFrames[participantId2].totalGold;
-      
-    //       return {
-    //         participantId1: participantGold1,
-    //         participantId2: participantGold2
-    //       };
-    //     }
-      
-    //     // Return null if the gold data is not available at 10 minutes
-    //     return null;
-    //   }
+    useEffect(() => {
+        if (matchData) {
+            setStatBall(expandedMatchCalc(matchData, participantBall, gameSummary));
+        }
+    }, [matchData]);
 
 
-    if(props.gameId) {
-        if(matchData) {
-            console.log(matchData);
+    if (calcDone) {
+        try {
             return (
-                <div className="expandedMatchBox">Game</div>
-            );
-        } else {
+                <div className="expandedMatchBox">
+                    <div className="expColumn">
+                        <div className="columnTitle">10 mins</div>
+                        <div className="graphLabel">cs</div>
+                        <div className="graphBar">
+                            <div className="duoHalf">
+                                <div className="duoMax"><animated.div/><animated.div/></div>
+                            </div>
+                            <div className="enemyHalf">
+                                <div className="duoMax"><animated.div/><animated.div/></div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div className="expColumn">
+                        <div className="columnTitle">Combat</div>
+                        <div className="graphLabel">Damage</div>
+                        <div className="graphBar">
+
+                        </div>
+                    </div>
+                    <div className="expColumn">
+                        <div className="columnTitle">Objectives</div>
+                        <div className="graphLabel">Structure Damage</div>
+                        <div className="graphBar">
+
+                        </div>
+                    </div>
+
+                </div>
+            )
+
+        } catch {
             return (
                 <div className="expandedMatchBox">No Game</div>
-            );
+            )
         }
-        
+
     } else {
         return (
             <div className="expandedMatchBox">No Game</div>
@@ -68,8 +91,8 @@ function ExpandedMatch(props) {
 }
 
 ExpandedMatch.propTypes = {
-    gameId: PropTypes.number,
-    participantBall: PropTypes.object
-  }
+    participants: PropTypes.object,
+    gameSummary: PropTypes.object
+}
 
 export default ExpandedMatch

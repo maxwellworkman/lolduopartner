@@ -12,6 +12,22 @@ function SummonerCard(props) {
     setIsHovered(false);
   };
 
+  //unreadable function, rewrite
+  //logic for removing selected players on click
+  const handleClick = () => {
+    const [ p1, p2, setP1, setP2 ] = props.duoList;
+    if(props.player.summonerName === p1.summonerName) {
+      if(p2 !== {}) {
+        setP1(p2);
+        setP2({});
+      } else {
+        setP1({});
+      }
+    } else if(props.player.summonerName === props.duoList[1].summonerName) {
+      setP2({});
+    }
+  }
+
   try {
     return (
       <>
@@ -20,6 +36,7 @@ function SummonerCard(props) {
             className="duoCard"
             onMouseEnter={handleHover}
             onMouseLeave={handleLeave}
+            onClick={handleClick}
           >
             {props.player.summonerName === "Hyzare" ? (
               <img className="duoIcon" src={jhinGuy} alt="Profile Icon"></img>

@@ -5,6 +5,9 @@
   --white: #fff;
   --gray: #9b9b9b;
   --cream: #f2e3d6;
+  font-family: "beaufort-pro", serif;
+  font-weight: 400;
+  font-style: normal; 
 }
 
 .form__group {

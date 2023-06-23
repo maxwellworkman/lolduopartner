@@ -8,9 +8,10 @@ import MatchHistory from "./components/MatchHistory";
 import WinRates from "./components/WinRates";
 import { PropTypes } from "prop-types";
 
+
+
 function App() {
   const [gameList, setGameList] = useState([]);
-
   const [playerData, setPlayerData] = useState("");
   const [firstPlayer, setFirstPlayer] = useState({});
   const [secondPlayer, setSecondPlayer] = useState({});
@@ -38,7 +39,7 @@ function App() {
     setShowStats(false);
   };
 
-  const duoList = [firstPlayer, secondPlayer];
+  const duoList = [firstPlayer, secondPlayer, setFirstPlayer, setSecondPlayer];
 
   const serverURL = "http://localhost:4000";
   var start = 0;
@@ -54,7 +55,7 @@ function App() {
         params: { firstPlayerName, secondPlayerName, start, count },
       });
       setGameList(response.data);
-      console.log(gameList);
+      //console.log(gameList);
     } catch (error) {
       console.log(error);
     }
@@ -98,7 +99,7 @@ function App() {
     return (
       <>
         {props.players.map((player, index) => (
-          <SummonerCard player={player} key={index} />
+          <SummonerCard player={player} key={index} duoList={props.players} />
         ))}
       </>
     );

@@ -29,7 +29,7 @@ function MatchHistory({ firstPlayer, secondPlayer, gameList}) {
 MatchHistory.propTypes = {
   firstPlayer: PropTypes.object,
   secondPlayer: PropTypes.object,
-  gameList: PropTypes.object
+  gameList: PropTypes.array
 }
 
 export default MatchHistory;

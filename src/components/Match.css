@@ -101,8 +101,7 @@
   align-items: center;
 }
 
-.expandedMatchBox {
-}
+
 .cardExpandContainer {
   display: flex;
   flex-direction: column;
@@ -116,4 +115,47 @@
   flex-direction: row;
   justify-content: center;
   height: fit-content;
+}
+
+.expandBox {
+  display: flex;
+  justify-content: center;
+}
+.expandedMatchBox {
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.expColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 33%;
+  padding: 10px;
+}
+
+.graphBar {
+  align-self: center;
+  height: 30px;
+  width: 90%;
+  border-radius: 5px;
+  background-color: rgb(0, 0, 0, 0.3);
+}
+
+.graphLabel {
+  font-size: 15px;
+}
+
+.duoHalf {
+  width: 50%;
+  height: 100%;
+}
+
+.enemyHalf {
+  width: 50%;
+  height: 100%;
 }
