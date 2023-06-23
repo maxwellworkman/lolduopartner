@@ -2,7 +2,7 @@ import "./Match.css";
 import fetchMatchTimeline from "./fetchMatchTimeline";
 import React, { useState, useEffect } from "react";
 import { PropTypes } from "prop-types";
-import expandedMatchCalc from "./expandedMatchCalc.js"
+import expandCalc from "./expandCalc.js"
 import { useSpring, animated } from 'react-spring';
 
 function ExpandedMatch(props) {
@@ -38,7 +38,7 @@ function ExpandedMatch(props) {
 
     useEffect(() => {
         if (matchData) {
-            setStatBall(expandedMatchCalc(matchData, participantBall));
+            setStatBall(expandCalc(matchData, participantBall));
             setRatios(calculatePercentages(statBall));
         }
     }, [matchData]);
