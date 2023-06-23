@@ -12,7 +12,7 @@ function ExpandedMatch(props) {
     const [ratios, setRatios] = useState({});
     const participantBall = props.participants;
     const gameId = props.gameSummary.info.gameId;
-    const gameSummary = props.gameSummary;
+    //const gameSummary = props.gameSummary;
     //console.log(props);
 
     useEffect(() => {
