@@ -169,12 +169,13 @@ function expandCalc(timelineData, participantBall, gameSummary) {
 
     function getDmgPerMin(frame, { p1, p2, e1, e2 }) {
         if (frame && frame.participantFrames) {
-            const minutes = (frame.timeStamp/60000);
+            const minutes = (frame.timestamp/60000);
             const dmgAtFrame = getDmgAtFrame(frame, {p1, p2, e1, e2});
-            const p1DmgPerMin = ((dmgAtFrame.p1)/minutes).toFixed(2);
-            const p2DmgPerMin = ((dmgAtFrame.p2)/minutes).toFixed(2);
-            const e1DmgPerMin = ((dmgAtFrame.e1)/minutes).toFixed(2);
-            const e2DmgPerMin = ((dmgAtFrame.e2)/minutes).toFixed(2);
+            
+            const p1DmgPerMin = parseFloat(((dmgAtFrame.p1)/minutes).toFixed(2));
+            const p2DmgPerMin = parseFloat(((dmgAtFrame.p2)/minutes).toFixed(2));
+            const e1DmgPerMin = parseFloat(((dmgAtFrame.e1)/minutes).toFixed(2));
+            const e2DmgPerMin = parseFloat(((dmgAtFrame.e2)/minutes).toFixed(2));
             return {
                 p1: p1DmgPerMin,
                 p2: p2DmgPerMin,
@@ -182,6 +183,7 @@ function expandCalc(timelineData, participantBall, gameSummary) {
                 e2: e2DmgPerMin
             }
         }
+        console.log("we're getting here")
         return {
             p1: 0,
             p2: 0,
@@ -194,10 +196,10 @@ function expandCalc(timelineData, participantBall, gameSummary) {
         if (frame && frame.participantFrames) {
             const goldAtFrame = getGoldAtFrame(frame, {p1, p2, e1, e2})
             const dmgAtFrame = getDmgAtFrame(frame, {p1, p2, e1, e2});
-            const p1DmgPerGold = (dmgAtFrame.p1/(goldAtFrame.p1)).toFixed(2);
-            const p2DmgPerGold = (dmgAtFrame.p2/(goldAtFrame.p2)).toFixed(2);
-            const e1DmgPerGold = (dmgAtFrame.e1/(goldAtFrame.e1)).toFixed(2);
-            const e2DmgPerGold = (dmgAtFrame.e2/(goldAtFrame.e2)).toFixed(2);
+            const p1DmgPerGold = parseFloat((dmgAtFrame.p1/(goldAtFrame.p1)).toFixed(2));
+            const p2DmgPerGold = parseFloat((dmgAtFrame.p2/(goldAtFrame.p2)).toFixed(2));
+            const e1DmgPerGold = parseFloat((dmgAtFrame.e1/(goldAtFrame.e1)).toFixed(2));
+            const e2DmgPerGold = parseFloat((dmgAtFrame.e2/(goldAtFrame.e2)).toFixed(2));
             return {
                 p1: p1DmgPerGold,
                 p2: p2DmgPerGold,

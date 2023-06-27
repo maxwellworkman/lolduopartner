@@ -51,7 +51,9 @@ function ExpandedMatch(props) {
           const pTotal = statBall[key].p1 + statBall[key].p2;
           const eTotal = statBall[key].e1 + statBall[key].e2;
           const maxTotal = Math.max(pTotal, eTotal);
-      
+          console.log(pTotal);
+          console.log(eTotal);
+          console.log(maxTotal);
           if (maxTotal !== 0) {
             updatedStatBall[key] = {
               p1: Math.round((statBall[key].p1 / maxTotal) * 100),
@@ -59,6 +61,7 @@ function ExpandedMatch(props) {
               e1: Math.round((statBall[key].e1 / maxTotal) * 100),
               e2: Math.round((statBall[key].e2 / maxTotal) * 100)
             };
+            console.log(updatedStatBall[key]);
           } else {
             updatedStatBall[key] = { ...statBall[key] }; // Copy original values if maxTotal is 0
           }
