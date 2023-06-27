@@ -13,17 +13,18 @@ function ExpandedMatch(props) {
     const participantBall = props.participants;
     const gameId = props.gameSummary.info.gameId;
     const gameSummary = props.gameSummary;
-    //console.log(props);
 
     useEffect(() => {
         if (gameId) {
             fetchMatchData();
+            console.log("gameId hook firing: " + gameId);
         }
     }, [gameId]);
 
     useEffect(() => {
-        if (statBall.goldAt10) {
+        if (statBall.visionScore) {
             setCalcDone(true);
+            console.log("statBall hook firing: " + statBall);
         }
     }, [statBall]);
 
@@ -40,6 +41,8 @@ function ExpandedMatch(props) {
         if (matchData) {
             setStatBall(expandCalc(matchData, participantBall, gameSummary));
             setRatios(calculatePercentages(statBall));
+            console.log("matchData hook firing: " + matchData);
+            console.log(ratios);
         }
     }, [matchData]);
 
@@ -51,9 +54,9 @@ function ExpandedMatch(props) {
           const pTotal = statBall[key].p1 + statBall[key].p2;
           const eTotal = statBall[key].e1 + statBall[key].e2;
           const maxTotal = Math.max(pTotal, eTotal);
-          console.log(pTotal);
-          console.log(eTotal);
-          console.log(maxTotal);
+        //   console.log(pTotal);
+        //   console.log(eTotal);
+        //   console.log(maxTotal);
           if (maxTotal !== 0) {
             updatedStatBall[key] = {
               p1: Math.round((statBall[key].p1 / maxTotal) * 100),
@@ -61,7 +64,7 @@ function ExpandedMatch(props) {
               e1: Math.round((statBall[key].e1 / maxTotal) * 100),
               e2: Math.round((statBall[key].e2 / maxTotal) * 100)
             };
-            console.log(updatedStatBall[key]);
+            // console.log(updatedStatBall[key]);
           } else {
             updatedStatBall[key] = { ...statBall[key] }; // Copy original values if maxTotal is 0
           }
@@ -69,8 +72,6 @@ function ExpandedMatch(props) {
       
         return updatedStatBall;
     }
-
-    
 
     const animatedStyles = useSpring({
         width: calcDone ? "100%" : "0%",
@@ -146,7 +147,7 @@ function ExpandedMatch(props) {
                     </div>
                     <div className="objColumn">
                         <div className="columnTitle">Objectives</div>
-                        {Object.keys(ratios).slice(0, 4).map(key => (
+                        {Object.keys(ratios).slice(8, 10).map(key => (
                             <div className="statRow" key={key}>
                                 <div className={`graphLabel ${key}`}>{key}</div>
                                 <div className="graphBar">

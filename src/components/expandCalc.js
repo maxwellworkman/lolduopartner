@@ -1,7 +1,7 @@
 
 function expandCalc(timelineData, participantBall, gameSummary) {
-    //console.log(timelineData);
-    //console.log(gameSummary);
+    console.log(timelineData);
+    console.log(gameSummary);
     const tl = timelineData.info;
     const frames = tl.frames;
     const gameData = gameSummary.info;
@@ -192,7 +192,7 @@ function expandCalc(timelineData, participantBall, gameSummary) {
         };
     }
 
-    function getDmgPerGold(frame, { p1, p2, e1, e2}) {
+    function getDmgPerGold(frame, { p1, p2, e1, e2 }) {
         if (frame && frame.participantFrames) {
             const goldAtFrame = getGoldAtFrame(frame, {p1, p2, e1, e2})
             const dmgAtFrame = getDmgAtFrame(frame, {p1, p2, e1, e2});
@@ -215,7 +215,7 @@ function expandCalc(timelineData, participantBall, gameSummary) {
         };
     }
 
-    function getKDA(gameData, {p1, p2, e1, e2}) {
+    function getKDA(gameData, { p1, p2, e1, e2 }) {
         const p1Deaths = gameData.participants[p1-1].deaths !==0 ? gameData.participants[p1-1].deaths : 1;
         const p2Deaths = gameData.participants[p2-1].deaths !==0 ? gameData.participants[p2-1].deaths : 1;
         const e1Deaths = gameData.participants[e1-1].deaths !==0 ? gameData.participants[e1-1].deaths : 1;
@@ -241,6 +241,53 @@ function expandCalc(timelineData, participantBall, gameSummary) {
         };
     }
 
+    function getDmgToStruct(gameData, { p1, p2, e1, e2 }) {
+        console.log(gameData);
+        if(gameData) {
+            const p = gameData.participants;
+            const p1StructDmg = p[p1-1].damageDealtToBuildings;
+            const p2StructDmg = p[p2-1].damageDealtToBuildings;
+            const e1StructDmg = p[e1-1].damageDealtToBuildings;
+            const e2StructDmg = p[e2-1].damageDealtToBuildings;
+            return {
+                p1: p1StructDmg,
+                p2: p2StructDmg,
+                e1: e1StructDmg,
+                e2: e2StructDmg
+            };
+        } else {
+            return {
+                p1: 0,
+                p2: 0,
+                e1: 0,
+                e2: 0
+            }
+        }
+    }
+
+    function getVisionScore(gameData, { p1, p2, e1, e2 }) {
+        if(gameData) {
+            const p = gameData.participants;
+            const p1VisionScore = p[p1-1].visionScore;
+            const p2VisionScore = p[p2-1].visionScore;
+            const e1VisionScore = p[e1-1].visionScore;
+            const e2VisionScore = p[e2-1].visionScore;
+            return {
+                p1: p1VisionScore,
+                p2: p2VisionScore,
+                e1: e1VisionScore,
+                e2: e2VisionScore
+            };
+        } else {
+            return {
+                p1: 0,
+                p2: 0,
+                e1: 0,
+                e2: 0
+            }
+        }
+    }
+
     statBall.goldAt10 = getGoldAtFrame(frameAt10Minutes, participantBall);
     statBall.csAt10 = getCsAtFrame(frameAt10Minutes, participantBall);
     statBall.dmgAt10 = getDmgAtFrame(frameAt10Minutes, participantBall);
@@ -249,6 +296,8 @@ function expandCalc(timelineData, participantBall, gameSummary) {
     statBall.dmgPerMin = getDmgPerMin(lastFrame, participantBall);
     statBall.dmgPerGold = getDmgPerGold(lastFrame, participantBall);
     statBall.kda = getKDA(gameData, participantBall);
+    statBall.dmgToStruct = getDmgToStruct(gameData, participantBall);
+    statBall.visionScore = getVisionScore(gameData, participantBall);
 
 
     return statBall;
