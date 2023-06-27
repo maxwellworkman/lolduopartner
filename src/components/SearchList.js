@@ -45,7 +45,7 @@ function SearchList(props) {
     );
   } catch (error) {
     console.log("it's empty friend");
-    return <p>Can&apost find Summoner</p>;
+    return <p>Cannot find Summoner</p>;
   }
 }
 
