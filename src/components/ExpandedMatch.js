@@ -24,9 +24,10 @@ function ExpandedMatch(props) {
     useEffect(() => {
         if (statBall.visionScore) {
             setCalcDone(true);
-            console.log("statBall hook firing: " + statBall);
+            console.log("ratios hook firing: ");
+            console.log(ratios);
         }
-    }, [statBall]);
+    }, [ratios]);
 
     const fetchMatchData = async () => {
         try {
@@ -41,8 +42,6 @@ function ExpandedMatch(props) {
         if (matchData) {
             setStatBall(expandCalc(matchData, participantBall, gameSummary));
             setRatios(calculatePercentages(statBall));
-            console.log("matchData hook firing: " + matchData);
-            console.log(ratios);
         }
     }, [matchData]);
 
