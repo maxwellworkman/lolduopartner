@@ -1,11 +1,13 @@
 
-function expandCalc(matchData, participantBall) {
-    //console.log(matchData);
+function expandCalc(timelineData, participantBall, gameSummary) {
+    //console.log(timelineData);
     //console.log(gameSummary);
-    const tl = matchData.info;
+    const tl = timelineData.info;
     const frames = tl.frames;
-    //const summary = gameSummary;
+    const gameData = gameSummary.info;
     const frameAt10Minutes = frames.find(frame => frame.timestamp >= 600000);
+    const lastFrame = frames[frames.length-1];
+    //console.log(lastFrame);
     const statBall = {
         goldAt10: {
             p1: 0,
@@ -165,13 +167,86 @@ function expandCalc(matchData, participantBall) {
           };
     }
 
+    function getDmgPerMin(frame, { p1, p2, e1, e2 }) {
+        if (frame && frame.participantFrames) {
+            const minutes = (frame.timeStamp/60000);
+            const dmgAtFrame = getDmgAtFrame(frame, {p1, p2, e1, e2});
+            const p1DmgPerMin = ((dmgAtFrame.p1)/minutes).toFixed(2);
+            const p2DmgPerMin = ((dmgAtFrame.p2)/minutes).toFixed(2);
+            const e1DmgPerMin = ((dmgAtFrame.e1)/minutes).toFixed(2);
+            const e2DmgPerMin = ((dmgAtFrame.e2)/minutes).toFixed(2);
+            return {
+                p1: p1DmgPerMin,
+                p2: p2DmgPerMin,
+                e1: e1DmgPerMin,
+                e2: e2DmgPerMin
+            }
+        }
+        return {
+            p1: 0,
+            p2: 0,
+            e1: 0,
+            e2: 0
+        };
+    }
+
+    function getDmgPerGold(frame, { p1, p2, e1, e2}) {
+        if (frame && frame.participantFrames) {
+            const goldAtFrame = getGoldAtFrame(frame, {p1, p2, e1, e2})
+            const dmgAtFrame = getDmgAtFrame(frame, {p1, p2, e1, e2});
+            const p1DmgPerGold = (dmgAtFrame.p1/(goldAtFrame.p1)).toFixed(2);
+            const p2DmgPerGold = (dmgAtFrame.p2/(goldAtFrame.p2)).toFixed(2);
+            const e1DmgPerGold = (dmgAtFrame.e1/(goldAtFrame.e1)).toFixed(2);
+            const e2DmgPerGold = (dmgAtFrame.e2/(goldAtFrame.e2)).toFixed(2);
+            return {
+                p1: p1DmgPerGold,
+                p2: p2DmgPerGold,
+                e1: e1DmgPerGold,
+                e2: e2DmgPerGold
+            }
+        }
+        return {
+            p1: 0,
+            p2: 0,
+            e1: 0,
+            e2: 0
+        };
+    }
+
+    function getKDA(gameData, {p1, p2, e1, e2}) {
+        const p1Deaths = gameData.participants[p1-1].deaths !==0 ? gameData.participants[p1-1].deaths : 1;
+        const p2Deaths = gameData.participants[p2-1].deaths !==0 ? gameData.participants[p2-1].deaths : 1;
+        const e1Deaths = gameData.participants[e1-1].deaths !==0 ? gameData.participants[e1-1].deaths : 1;
+        const e2Deaths = gameData.participants[e2-1].deaths !==0 ? gameData.participants[e2-1].deaths : 1;
+        if(gameData) {
+            const p1KDA = (gameData.participants[p1-1].kills+gameData.participants[p1-1].assists)/p1Deaths;
+            const p2KDA = (gameData.participants[p2-1].kills+gameData.participants[p2-1].assists)/p2Deaths;
+            const e1KDA = (gameData.participants[e1-1].kills+gameData.participants[e1-1].assists)/e1Deaths;
+            const e2KDA = (gameData.participants[e2-1].kills+gameData.participants[e2-1].assists)/e2Deaths;
+            return {
+                p1: p1KDA,
+                p2: p2KDA,
+                e1: e1KDA,
+                e2: e2KDA
+            }
+
+        }
+        return {
+            p1: 0,
+            p2: 0,
+            e1: 0,
+            e2: 0
+        };
+    }
 
     statBall.goldAt10 = getGoldAtFrame(frameAt10Minutes, participantBall);
     statBall.csAt10 = getCsAtFrame(frameAt10Minutes, participantBall);
     statBall.dmgAt10 = getDmgAtFrame(frameAt10Minutes, participantBall);
     statBall.xpAt10 = getXpAtFrame(frameAt10Minutes, participantBall);
-
-    
+    statBall.dmg = getDmgAtFrame(lastFrame, participantBall);
+    statBall.dmgPerMin = getDmgPerMin(lastFrame, participantBall);
+    statBall.dmgPerGold = getDmgPerGold(lastFrame, participantBall);
+    statBall.kda = getKDA(gameData, participantBall);
 
 
     return statBall;

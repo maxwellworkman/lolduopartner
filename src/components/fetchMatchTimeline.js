@@ -1,7 +1,8 @@
 import axios from "axios";
 
 async function fetchMatchTimeline(props) {
-  const serverURL = "http://localhost:4000";
+  //const serverURL = "http://localhost:4000";
+  const serverURL = "https://lolduopartnerserver.onrender.com";
   const gameId = props;
   try {
     const response = await axios.get(serverURL + "/expand", {

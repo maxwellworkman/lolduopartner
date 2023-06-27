@@ -12,7 +12,7 @@ function ExpandedMatch(props) {
     const [ratios, setRatios] = useState({});
     const participantBall = props.participants;
     const gameId = props.gameSummary.info.gameId;
-    //const gameSummary = props.gameSummary;
+    const gameSummary = props.gameSummary;
     //console.log(props);
 
     useEffect(() => {
@@ -38,7 +38,7 @@ function ExpandedMatch(props) {
 
     useEffect(() => {
         if (matchData) {
-            setStatBall(expandCalc(matchData, participantBall));
+            setStatBall(expandCalc(matchData, participantBall, gameSummary));
             setRatios(calculatePercentages(statBall));
         }
     }, [matchData]);
@@ -113,7 +113,7 @@ function ExpandedMatch(props) {
                     </div>
                     <div className="combatColumn">
                         <div className="columnTitle">Combat</div>
-                        {Object.keys(ratios).slice(0, 4).map(key => (
+                        {Object.keys(ratios).slice(4, 8).map(key => (
                             <div className="statRow" key={key}>
                                 <div className={`graphLabel ${key}`}>{key}</div>
                                 <div className="graphBar">
