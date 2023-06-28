@@ -118,7 +118,7 @@ function Match(props) {
   }
 
   const slideOpen = useSpring({
-    height: expand ? '400px' : '0px',
+    height: expand ? '350px' : '0px',
   });
 
   if (props.firstPlayer && props.secondPlayer) {

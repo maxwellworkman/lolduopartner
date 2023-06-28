@@ -198,16 +198,16 @@
 .p1Bar {
   height: 100%;
   background-color: #fea623;
-  background-image: linear-gradient(top, #feb523, #cc6e1b);
-  background-image: -webkit-linear-gradient(top, #feb523, #cc6e1b);
+  background-image: linear-gradient(#feb523, #cc6e1b);
+  background-image: -webkit-linear-gradient(#feb523, #cc6e1b);
 
 }
 
 .p2Bar {
   height: 100%;
   background-color: #fe3923;
-  background-image: linear-gradient(top, #db462c, #b52626);
-  background-image: -webkit-linear-gradient(top, #db462c, #b52626);
+  background-image: linear-gradient(#db462c, #b52626);
+  background-image: -webkit-linear-gradient(#db462c, #b52626);
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
 }
@@ -215,16 +215,16 @@
 .e1Bar {
   height: 100%;
   background-color: #4a2acc;
-  background-image: linear-gradient(top, #9138b2, #671c83);
-  background-image: -webkit-linear-gradient(top, #9138b2, #671c83);
+  background-image: linear-gradient(#9138b2, #671c83);
+  background-image: -webkit-linear-gradient(#9138b2, #671c83);
 
 }
 
 .e2Bar {
   height: 100%;
   background-color: #5b34bd;
-  background-image: linear-gradient(top, #4e38b2, #40268f);
-  background-image: -webkit-linear-gradient(top, #4e38b2, #40268f);
+  background-image: linear-gradient(#4e38b2, #40268f);
+  background-image: -webkit-linear-gradient(#4e38b2, #40268f);
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }

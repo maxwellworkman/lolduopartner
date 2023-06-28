@@ -181,7 +181,6 @@ function App() {
         ) : (
           <></>
         )}
-        {/* <DuoFound firstPlayer={firstPlayer} secondPlayer={secondPlayer} showStatsOff={showStatsOff} showStatsOn={showStatsOn} showSearchBarOff={showSearchBarOff} showSearchBarOn={showSearchBarOn}/> */}
         <div className="statsBox">
           {showStats && <WinRates gameList={gameList} />}
           {showStats && (
