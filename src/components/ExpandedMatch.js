@@ -2,8 +2,11 @@ import "./Match.css";
 import fetchMatchTimeline from "./fetchMatchTimeline";
 import React, { useState, useEffect } from "react";
 import { PropTypes } from "prop-types";
-import expandCalc from "./expandCalc.js"
-import { useSpring, animated } from 'react-spring';
+import expandCalc from "./expandCalc.js";
+import GraphBar from "./GraphBar";
+import early from "../images/early.png";
+import combat from "../images/combat.png";
+import objectives from "../images/objectives.png";
 
 function ExpandedMatch(props) {
     const [matchData, setMatchData] = useState(null);
@@ -13,19 +16,29 @@ function ExpandedMatch(props) {
     const participantBall = props.participants;
     const gameId = props.gameSummary.info.gameId;
     const gameSummary = props.gameSummary;
+    const graphTitles = {
+        goldAt10: "Gold at 10 Minutes",
+        csAt10: "CS at 10 Minutes",
+        dmgAt10: "Damage at 10 Minutes",
+        xpAt10: "XP at 10 Minutes",
+        dmg: "Damage to Champions",
+        dmgPerMin: "Damage per Minute",
+        dmgPerGold: "Damage per Gold",
+        kda: "K/D/A",
+        dmgToStruct: "Damage to Structures",
+        visionScore: "Vision Score",
+        epicMonsters: "Epic Monster Kills"
+    };
 
     useEffect(() => {
         if (gameId) {
             fetchMatchData();
-            console.log("gameId hook firing: " + gameId);
         }
     }, [gameId]);
 
     useEffect(() => {
-        if (statBall.visionScore) {
+        if (ratios.visionScore) {
             setCalcDone(true);
-            console.log("ratios hook firing: ");
-            console.log(ratios);
         }
     }, [ratios]);
 
@@ -41,9 +54,14 @@ function ExpandedMatch(props) {
     useEffect(() => {
         if (matchData) {
             setStatBall(expandCalc(matchData, participantBall, gameSummary));
-            setRatios(calculatePercentages(statBall));
         }
     }, [matchData]);
+
+    useEffect(() => {
+        if (statBall) {
+            setRatios(calculatePercentages(statBall));
+        }
+    }, [statBall]);
 
     function calculatePercentages(statBall) {
         const keys = Object.keys(statBall);
@@ -53,17 +71,22 @@ function ExpandedMatch(props) {
           const pTotal = statBall[key].p1 + statBall[key].p2;
           const eTotal = statBall[key].e1 + statBall[key].e2;
           const maxTotal = Math.max(pTotal, eTotal);
-        //   console.log(pTotal);
-        //   console.log(eTotal);
-        //   console.log(maxTotal);
+          
           if (maxTotal !== 0) {
             updatedStatBall[key] = {
               p1: Math.round((statBall[key].p1 / maxTotal) * 100),
               p2: Math.round((statBall[key].p2 / maxTotal) * 100),
               e1: Math.round((statBall[key].e1 / maxTotal) * 100),
-              e2: Math.round((statBall[key].e2 / maxTotal) * 100)
+              e2: Math.round((statBall[key].e2 / maxTotal) * 100),
+              diffed: ""
             };
-            // console.log(updatedStatBall[key]);
+            if((pTotal/eTotal) > 1.1) {
+                updatedStatBall[key].diffed = "greenDiff";
+              };
+            if((pTotal/eTotal) < 0.9) {
+                updatedStatBall[key].diffed = "redDiff";
+              };
+            //console.log(updatedStatBall[key]);
           } else {
             updatedStatBall[key] = { ...statBall[key] }; // Copy original values if maxTotal is 0
           }
@@ -72,42 +95,22 @@ function ExpandedMatch(props) {
         return updatedStatBall;
     }
 
-    const animatedStyles = useSpring({
-        width: calcDone ? "100%" : "0%",
-        from: { width: "0%" },
-        config: { tension: 80, friction: 30, delay: 10000},
-      });
-
-
     if (calcDone) {
             return (
                 <div className="expandedMatchBox">
                     <div className="expColumn">
-                        <div className="columnTitle">10 mins</div>
-
+                        <img className="columnIcon" src={early} alt="10 Minutes Icon"></img>
                         {Object.keys(ratios).slice(0, 4).map(key => (
                             <div className="statRow" key={key}>
-                                <div className={`graphLabel ${key}`}>{key}</div>
+                                <div className={`graphLabel ${key} ${ratios[key].diffed}`}>{graphTitles[key]}</div>
                                 <div className="graphBar">
                                     <div className="duoHalf">
-                                        <div className={`p1 p1Bar-${key}`} style={{ width: `${ratios[key].p1}%` }}>
-                                            <animated.div className={`p1Bar p1Bar-${key}`} style={animatedStyles} />
-                                            <animated.div />
-                                        </div>
-                                        <div className={`p2 p2Bar-${key}`} style={{ width: `${ratios[key].p2}%` }}>
-                                            <animated.div className={`p2Bar p2Bar-${key}`} style={animatedStyles} />
-                                            <animated.div />
-                                        </div>
+                                        <GraphBar percent={ratios[key].p1} player={"p1"}/>
+                                        <GraphBar percent={ratios[key].p2} player={"p2"}/>
                                     </div>
                                     <div className="enemyHalf">
-                                        <div className={`e1 e1Bar-${key}`} style={{ width: `${ratios[key].e1}%` }}>
-                                            <animated.div className={`e1Bar e1Bar-${key}`} style={animatedStyles} />
-                                            <animated.div />
-                                        </div>
-                                        <div className={`e2 e2Bar-${key}`} style={{ width: `${ratios[key].e2}%` }}>
-                                            <animated.div className={`e2Bar e2Bar-${key}`} style={animatedStyles} />
-                                            <animated.div />
-                                        </div>
+                                        <GraphBar percent={ratios[key].e1} player={"e1"}/>
+                                        <GraphBar percent={ratios[key].e2} player={"e2"}/>
                                     </div>
                                 </div>
                             </div>
@@ -115,60 +118,36 @@ function ExpandedMatch(props) {
 
                     </div>
                     <div className="combatColumn">
-                        <div className="columnTitle">Combat</div>
+                        <img className="columnIcon" src={combat} alt="Combat Icon"></img>
                         {Object.keys(ratios).slice(4, 8).map(key => (
                             <div className="statRow" key={key}>
-                                <div className={`graphLabel ${key}`}>{key}</div>
+                                <div className={`graphLabel ${key} ${ratios[key].diffed}`}>{graphTitles[key]}</div>
                                 <div className="graphBar">
-                                    <div className="duoHalf">
-                                        <div className={`p1 p1Bar-${key}`} style={{ width: `${ratios[key].p1}%` }}>
-                                            <animated.div className={`p1Bar p1Bar-${key}`} style={animatedStyles} />
-                                            <animated.div />
-                                        </div>
-                                        <div className={`p2 p2Bar-${key}`} style={{ width: `${ratios[key].p2}%` }}>
-                                            <animated.div className={`p2Bar p2Bar-${key}`} style={animatedStyles} />
-                                            <animated.div />
-                                        </div>
+                                <div className="duoHalf">
+                                        <GraphBar percent={ratios[key].p1} player={"p1"}/>
+                                        <GraphBar percent={ratios[key].p2} player={"p2"}/>
                                     </div>
                                     <div className="enemyHalf">
-                                        <div className={`e1 e1Bar-${key}`} style={{ width: `${ratios[key].e1}%` }}>
-                                            <animated.div className={`e1Bar e1Bar-${key}`} style={animatedStyles} />
-                                            <animated.div />
-                                        </div>
-                                        <div className={`e2 e2Bar-${key}`} style={{ width: `${ratios[key].e2}%` }}>
-                                            <animated.div className={`e2Bar e2Bar-${key}`} style={animatedStyles} />
-                                            <animated.div />
-                                        </div>
+                                        <GraphBar percent={ratios[key].e1} player={"e1"}/>
+                                        <GraphBar percent={ratios[key].e2} player={"e2"}/>
                                     </div>
                                 </div>
                             </div>
                         ))}
                     </div>
                     <div className="objColumn">
-                        <div className="columnTitle">Objectives</div>
+                        <img className="columnIcon" src={objectives} alt="Objectives Icon"></img>
                         {Object.keys(ratios).slice(8, 10).map(key => (
                             <div className="statRow" key={key}>
-                                <div className={`graphLabel ${key}`}>{key}</div>
+                                <div className={`graphLabel ${key} ${ratios[key].diffed}`}>{graphTitles[key]}</div>
                                 <div className="graphBar">
-                                    <div className="duoHalf">
-                                        <div className={`p1 p1Bar-${key}`} style={{ width: `${ratios[key].p1}%` }}>
-                                            <animated.div className={`p1Bar p1Bar-${key}`} style={animatedStyles} />
-                                            <animated.div />
-                                        </div>
-                                        <div className={`p2 p2Bar-${key}`} style={{ width: `${ratios[key].p2}%` }}>
-                                            <animated.div className={`p2Bar p2Bar-${key}`} style={animatedStyles} />
-                                            <animated.div />
-                                        </div>
+                                <div className="duoHalf">
+                                        <GraphBar percent={ratios[key].p1} player={"p1"}/>
+                                        <GraphBar percent={ratios[key].p2} player={"p2"}/>
                                     </div>
                                     <div className="enemyHalf">
-                                        <div className={`e1 e1Bar-${key}`} style={{ width: `${ratios[key].e1}%` }}>
-                                            <animated.div className={`e1Bar e1Bar-${key}`} style={animatedStyles} />
-                                            <animated.div />
-                                        </div>
-                                        <div className={`e2 e2Bar-${key}`} style={{ width: `${ratios[key].e2}%` }}>
-                                            <animated.div className={`e2Bar e2Bar-${key}`} style={animatedStyles} />
-                                            <animated.div />
-                                        </div>
+                                        <GraphBar percent={ratios[key].e1} player={"e1"}/>
+                                        <GraphBar percent={ratios[key].e2} player={"e2"}/>
                                     </div>
                                 </div>
                             </div>
@@ -179,7 +158,7 @@ function ExpandedMatch(props) {
             )
     } else {
         return (
-            <div className="expandedMatchBox">No Game</div>
+            <div className="expandedMatchBox">Loading Game Data...</div>
         );
     }
 }

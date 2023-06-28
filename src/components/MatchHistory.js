@@ -9,14 +9,14 @@ function MatchHistory({ firstPlayer, secondPlayer, gameList}) {
   return (
     <>
       <div className="matchBox">
-        {gameList.map((gameData) => (
+        {gameList.map((gameData, index) => (
           <>
             {gameList.length > 0 && (
               <Match
                 firstPlayer={firstPlayer}
                 secondPlayer={secondPlayer}
                 gameData={gameData}
-                key={gameData.info.gameId}
+                key={gameData.info.gameId + " " + index}
               />
             )}
           </>

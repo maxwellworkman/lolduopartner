@@ -1,7 +1,7 @@
 
 function expandCalc(timelineData, participantBall, gameSummary) {
-    console.log(timelineData);
-    console.log(gameSummary);
+    // console.log(timelineData);
+    // console.log(gameSummary);
     const tl = timelineData.info;
     const frames = tl.frames;
     const gameData = gameSummary.info;
@@ -242,7 +242,7 @@ function expandCalc(timelineData, participantBall, gameSummary) {
     }
 
     function getDmgToStruct(gameData, { p1, p2, e1, e2 }) {
-        console.log(gameData);
+        //console.log(gameData);
         if(gameData) {
             const p = gameData.participants;
             const p1StructDmg = p[p1-1].damageDealtToBuildings;
