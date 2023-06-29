@@ -3,7 +3,7 @@ import axios from "axios";
 
 async function fetchPlayerGames(props) {
   //const serverURL = "https://localhost:4000";
-  const serverURL = "https://lolduopartnerserver2.onrender.com";
+  const serverURL = "https://lolduopartnerserver.onrender.com";
   const { firstPlayer, secondPlayer, start, count } = props;
   try {
     const response = await axios.get(serverURL + "/past5Games", {

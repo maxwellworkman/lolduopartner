@@ -40,7 +40,7 @@ function App() {
   const duoList = [firstPlayer, secondPlayer, setFirstPlayer, setSecondPlayer];
 
   //const serverURL = "http://localhost:4000";
-  const serverURL = "https://lolduopartnerserver2.onrender.com";
+  const serverURL = "https://lolduopartnerserver.onrender.com";
   var start = 0;
   var count = 100;
   const prevFirstPlayer = useRef(null);
