@@ -6,6 +6,7 @@ import SummonerCard from "./components/SummonerCard";
 import MatchHistory from "./components/MatchHistory";
 import WinRates from "./components/WinRates";
 import { PropTypes } from "prop-types";
+import { useSearchParams } from "react-router-dom";
 
 
 
@@ -17,6 +18,9 @@ function App() {
   const [showSearchList, setShowSearchList] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(true);
   const [showStats, setShowStats] = useState(false);
+  const [searchParams] = useSearchParams({p1: "", p2: ""});
+  // console.log(searchParams.get("p1"));
+  // console.log(searchParams.get("p2"));
 
   const showSearchListOn = () => {
     setShowSearchList(true);
@@ -39,7 +43,6 @@ function App() {
 
   const duoList = [firstPlayer, secondPlayer, setFirstPlayer, setSecondPlayer];
 
-  //const serverURL = "http://localhost:4000";
   const serverURL = "https://lolduopartnerserver.onrender.com";
   var start = 0;
   var count = 100;
@@ -146,6 +149,15 @@ function App() {
       );
     }
   }
+
+  
+  if(searchParams.get("p1") !== "" && searchParams.get("p2") !== "") {
+    const p1 = getPlayer(searchParams.get("p1"));
+    const p2 = getPlayer(searchParams.get("p2"));
+    console.log(p1);
+    console.log(p2);
+  }
+
   return (
     <div className="App">
       <div className="container">
