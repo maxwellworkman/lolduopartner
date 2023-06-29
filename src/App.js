@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./App.css";
 import SearchList from "./components/SearchList";
-import PlayerList from "./components/PlayerList";
 import SummonerCard from "./components/SummonerCard";
 import MatchHistory from "./components/MatchHistory";
 import WinRates from "./components/WinRates";
@@ -16,7 +15,6 @@ function App() {
   const [firstPlayer, setFirstPlayer] = useState({});
   const [secondPlayer, setSecondPlayer] = useState({});
   const [showSearchList, setShowSearchList] = useState(false);
-  const [showPlayerList] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(true);
   const [showStats, setShowStats] = useState(false);
 
@@ -42,7 +40,7 @@ function App() {
   const duoList = [firstPlayer, secondPlayer, setFirstPlayer, setSecondPlayer];
 
   //const serverURL = "http://localhost:4000";
-  const serverURL = "https://lolduopartnerserver.onrender.com";
+  const serverURL = "https://lolduopartnerserver2.onrender.com";
   var start = 0;
   var count = 100;
   const prevFirstPlayer = useRef(null);
@@ -148,14 +146,6 @@ function App() {
       );
     }
   }
-
-  //Here's the page and component calls
-  //SummonerCards renders the cards of the duo partners
-  //Textbox fires a search function
-  //SearchList renders search results
-  //PlayerList doesn't do anything
-  //DuoFound is an event hook for when 2 players are picked
-  //Match History grabs player games and renders them
   return (
     <div className="App">
       <div className="container">
@@ -176,11 +166,6 @@ function App() {
             showSearchBarOff={showSearchBarOff}
           />
         ) : null}
-        {showPlayerList ? (
-          <PlayerList player={playerData} firstPlayer={firstPlayer} />
-        ) : (
-          <></>
-        )}
         <div className="statsBox">
           {showStats && <WinRates gameList={gameList} />}
           {showStats && (
