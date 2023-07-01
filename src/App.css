@@ -197,6 +197,5 @@ h5 {
 
 #root {
   height: 100vh;
-  width: 120vh;
-  max-width: fit-content;
+  min-width: fit-content;
 }

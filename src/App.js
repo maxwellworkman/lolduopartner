@@ -2,17 +2,21 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./App.css";
 import SearchList from "./components/SearchList";
-import SummonerCard from "./components/SummonerCard";
+import SummonerCards from "./components/SummonerCards";
 import MatchHistory from "./components/MatchHistory";
 import WinRates from "./components/WinRates";
+//import fetchPlayerGames from "./components/fetchPlayerGames";
+import TextBox from "./components/TextBox";
 import { PropTypes } from "prop-types";
 import { useSearchParams } from "react-router-dom";
+import fetchPlayer from "./components/fetchPlayer";
+
 
 
 
 function App() {
   const [gameList, setGameList] = useState([]);
-  const [playerData, setPlayerData] = useState("");
+  const [playerData, setPlayerData] = useState({});
   const [firstPlayer, setFirstPlayer] = useState({});
   const [secondPlayer, setSecondPlayer] = useState({});
   const [showSearchList, setShowSearchList] = useState(false);
@@ -22,9 +26,9 @@ function App() {
   // console.log(searchParams.get("p1"));
   // console.log(searchParams.get("p2"));
 
-  const showSearchListOn = () => {
-    setShowSearchList(true);
-  };
+  // const showSearchListOn = () => {
+  //   setShowSearchList(true);
+  // };
   const showSearchListOff = () => {
     setShowSearchList(false);
   };
@@ -46,6 +50,7 @@ function App() {
   const serverURL = "https://lolduopartnerserver.onrender.com";
   var start = 0;
   var count = 100;
+
   const prevFirstPlayer = useRef(null);
   const prevSecondPlayer = useRef(null);
 
@@ -82,81 +87,42 @@ function App() {
     prevSecondPlayer.current = secondPlayer;
   }, [firstPlayer, secondPlayer]);
 
-  //riot api call to find summoner info
-  function getPlayer(event) {
-    axios
-      .get(serverURL + "/player", { params: { username: event } })
-      .then(function (response) {
-        setPlayerData(response.data);
-        showSearchListOn();
-      })
-      .catch(function (error) {
-        console.log(error);
-        showSearchListOff();
-      });
-  }
-
-  //returns multiple summoner cards when passed an array of players info
-  function SummonerCards(props) {
-    return (
-      <>
-        {props.players.map((player, index) => (
-          <SummonerCard player={player} key={index} duoList={props.players} />
-        ))}
-      </>
-    );
-  }
-
-  //Debounced api call when text box is modified
-  function TextBox(props) {
-    const [value, setValue] = useState("");
-
-    useEffect(() => {
-      let timerId = null;
-      showSearchListOff();
-
-      if (value.length > 3) {
-        timerId = setTimeout(() => {
-          getPlayer(value);
-        }, 500);
-      }
-
-      return () => {
-        clearTimeout(timerId);
-      };
-    }, [value]);
-
-    const handleChange = (event) => {
-      setValue(event.target.value);
-    };
-    if (props.showSearchBar) {
-      return (
-        <div className="form__group field">
-          <input
-            type="text"
-            className="form__field"
-            value={value}
-            onChange={handleChange}
-            placeholder="Summoner Name"
-            name="name"
-            id="name"
-            required
-          />
-          <label htmlFor="name" className="form__label">
-            Summoner Name
-          </label>
-        </div>
-      );
+  useEffect(() => {
+    if(Object.keys(playerData).length > 0) {
+      setShowSearchList(true);
     }
-  }
+  }, [playerData]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // console.log("uh oh");
+      if (searchParams.get("p1") !== "" && searchParams.get("p2") !== "") {
+        try {
+          let p1 = await fetchPlayer(searchParams.get("p1"));
+          let p2 = await fetchPlayer(searchParams.get("p2"));
+  
+          if (p1 !== undefined) {
+            setFirstPlayer(p1[0]);
+          }
+  
+          if (p1 !== undefined && p2 !== undefined) {
+            setSecondPlayer(p2[0]);
+          } else if (p1 === undefined && p2 !== undefined) {
+            setFirstPlayer(p2[0]);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+  
+    fetchData();
+  }, [searchParams]);
+
+
 
   
-  if(searchParams.get("p1") !== "" && searchParams.get("p2") !== "") {
-    const p1 = getPlayer(searchParams.get("p1"));
-    const p2 = getPlayer(searchParams.get("p2"));
-    console.log(p1);
-    console.log(p2);
-  }
+  
 
   return (
     <div className="App">
@@ -165,7 +131,7 @@ function App() {
         <div className="playerBox">
           <SummonerCards players={duoList} />
         </div>
-        {TextBox({ showSearchBar })}
+        {showSearchBar && <TextBox setPlayerData={setPlayerData}/>}
 
         {showSearchList ? (
           <SearchList

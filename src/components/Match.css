@@ -246,3 +246,9 @@
 .redDiff {
   color: #b52233;
 }
+
+.loading {
+  align-self: center;
+  height: 80px;
+  width: 80px;
+}

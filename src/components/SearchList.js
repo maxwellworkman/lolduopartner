@@ -1,16 +1,17 @@
 import React from "react";
 
+
 function SearchList(props) {
   const pick = () => {
     if (Object.keys(props.firstPlayer).length === 0) {
-      props.setFirstPlayer(props.player[0]);
+      props.setFirstPlayer(props.player);
       props.showSearchListOff();
     }
     if (
       Object.keys(props.firstPlayer).length !== 0 &&
-      props.player[0].summonerName !== props.firstPlayer.summonerName
+      props.player.summonerName !== props.firstPlayer.summonerName
     ) {
-      props.setSecondPlayer(props.player[0]);
+      props.setSecondPlayer(props.player);
       props.showSearchListOff();
       props.showSearchBarOff();
     }
@@ -29,22 +30,21 @@ function SearchList(props) {
             className="summonerIcon"
             src={
               "http://ddragon.leagueoflegends.com/cdn/13.12.1/img/profileicon/" +
-              props.player[0].profileIconId +
+              props.player.profileIconId +
               ".png"
             }
             alt="Profile Icon"
           ></img>
           <div className="cardContent">
-            <div className="cardName">{props.player[0].summonerName}</div>
+            <div className="cardName">{props.player.summonerName}</div>
             <div className="cardRank">
-              {props.player[0].tier} {props.player[0].rank}
+              {props.player.tier} {props.player.rank}
             </div>
           </div>
         </div>
       </div>
     );
   } catch (error) {
-    console.log("it's empty friend");
     return <p>Cannot find Summoner</p>;
   }
 }

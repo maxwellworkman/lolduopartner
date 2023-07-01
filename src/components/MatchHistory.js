@@ -3,9 +3,7 @@ import Match from "./Match";
 import { PropTypes } from "prop-types";
 
 function MatchHistory({ firstPlayer, secondPlayer, gameList}) {
-  // console.log(firstPlayer);
-  // console.log(secondPlayer);
-  // console.log(gameList);
+
   return (
     <>
       <div className="matchBox">

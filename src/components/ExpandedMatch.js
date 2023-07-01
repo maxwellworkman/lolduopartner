@@ -7,6 +7,7 @@ import GraphBar from "./GraphBar";
 import early from "../images/early.png";
 import combat from "../images/combat.png";
 import objectives from "../images/objectives.png";
+import loading from "../images/loading.gif";
 
 function ExpandedMatch(props) {
     const [matchData, setMatchData] = useState(null);
@@ -158,7 +159,9 @@ function ExpandedMatch(props) {
             )
     } else {
         return (
-            <div className="expandedMatchBox">Loading Game Data...</div>
+            <div className="expandedMatchBox">
+                <img className="loading" src={loading} alt="Loading Match Data..."></img>
+            </div>
         );
     }
 }
